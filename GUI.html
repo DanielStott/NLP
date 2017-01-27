@@ -6,9 +6,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript">
 	</script>
-	<script src="http://harvesthq.github.io/chosen/chosen.jquery.js" type="text/javascript">
+	<script src="http://harvesthq.github.io/chosen/chosen.jquery.js" type="text/javascript"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-	</script>
+	
 	<script>
         $(function(){
             $(".chosen-select").chosen();
@@ -45,14 +45,30 @@
                 $(this).val("http://");
             } 
             });
+
+
+            $('#inputText, #url, #filePath').keyup(function() { 
+                if($(this).val().length > 0 ) {
+                     $("#inputText").prop('required',false);
+                     if($('.search-choice', $('.chosen-choices')).size() > 0) {
+                        document.getElementById('Analyse').disabled = false;
+                    }
+                }else{
+                     $("#inputText").prop('required',true);
+                    document.getElementById('Analyse').disabled = true;
+                }
+            }); 
         });
+        
         function eraseText() {
             document.getElementById("inputText").value = "";
         };
         function eraseUrl(){
             document.getElementById("url").value="";
         }
-        
+        function eraseFilePath(){
+            document.getElementById("filePath").value="";
+        }
         $.fn.serializeObject = function()
         {
             var o = {};
@@ -72,9 +88,13 @@
         $(function() {
             $('#myForm').submit(function() {
                 $('#result').text(JSON.stringify($('form').serializeObject()));
+                 var form  = JSON.stringify($('form').serializeObject())
+                console.log(form);
                 return false;
             });
         });
+
+        
 	</script>
     <style>
         .container{
@@ -118,13 +138,22 @@
 		.tab-content.current{
 			display: inherit;
 		}
-        .urlInput{
+        .fileP, .urlInput{
             width: 100%;
             padding:15px;
             font-size: 20px;
             font-weight: bold;
             margin-bottom: 20px;
         }
+
+        /*#drop {
+  min-height: 150px;
+  width: 250px;
+  border: 1px solid blue;
+  margin: 10px;
+  padding: 10px;
+}*/
+
         /* @group Base */
         .chosen-container {
         position: relative;
@@ -560,6 +589,11 @@
             float: left;
             width: 100%;
         }
+
+        input[disabled],input[disabled]:hover {
+            cursor: default;
+            background: #7ca3cf;
+        }
     </style>
 </head>
 <body>
@@ -571,10 +605,11 @@
             <form id="myForm" name="outPut" method="POST">
                 <select id="analyseOutput" name="outPutFormat" required>
                     <option value=""></option>
-                    <option value="Visualise">Visualise</option>
+                    <!--<option value="Visualise">Visualise</option>
                     <option value="Pretty-Print">Pretty Print</option>
                     <option value="XML">XML</option>
-                    <option value="JSON">JSON</option>
+                    <option value="JSON">JSON</option>-->
+                    <option value="TEXT">TEXT</option>
                 </select>
                 <!--<h4>Annotations</h4>-->
                 <select class="chosen-select" name="annotators" data-placeholder="Select Annotators" multiple style="width:100%;" tabindex="6"required >
@@ -595,6 +630,10 @@
                             <span class="glyphicon glyphicon-link"></span>
                             URL
                         </li>
+                        <li class="tab-link" data-tab="tab-3">
+                            <span class="glyphicon glyphicon-file"></span>
+                            File Directory
+                        </li>
                     </ul>
                     <div id="tab-1" class="tab-content current">
                         <textarea rows="15" id="inputText" placeholder="Type something..."name="inputText"></textarea>
@@ -604,15 +643,22 @@
                         </div>
                     </div>
                     <div id="tab-2" class="tab-content">
-                        <input class="urlInput" id="url" type"text" name="url" pattern="https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)" 
+                        <input class="urlInput" id="url" type="text" name="url" pattern="https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)" 
                         placeholder="http://www.example.com"/>
                         <div class="resetContainer">
                             <span class="glyphicon glyphicon-refresh"></span>
                             <input type="button" class="reset" value="Reset" onclick="javascript:eraseUrl();"/> 
                         </div>
                     </div>
+                    <div id="tab-3" class="tab-content">
+                        <input type="text" class="fileP" pattern="^(([a-zA-Z]:)|(\\{2}\w+)\$?)(\\(\w[\w ]*))+\.(txt|TXT)$" placeholder="c:\file.txt" name="filePath" id="filePath"/>
+                        <div class="resetContainer">
+                            <span class="glyphicon glyphicon-refresh"></span>
+                            <input type="button" class="reset" value="Reset" onclick="javascript:eraseFilePath();"/> 
+                        </div>
+                    </div>
                 </div>
-                <input type="submit" class="submitDetails" value="Analyse" id="Analyse"/>
+                <input type="submit" class="submitDetails" value="Analyse" id="Analyse" disabled/>
             </form>
             <button class="ClearAll">Clear All</button>
         </div>
