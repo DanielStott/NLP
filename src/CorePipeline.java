@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Properties;
 
 import edu.stanford.nlp.ling.CoreAnnotations;
@@ -26,9 +25,10 @@ import edu.stanford.nlp.util.CoreMap;
 //https://blog.openshift.com/day-20-stanford-corenlp-performing-sentiment-analysis-of-twitter-using-java/ <-- read later for sentiment example
 public class CorePipeline 
 {
+	private ManageFile mf = new ManageFile();
 
-	public boolean processDataDir(Path dirLocation, List<String> selectedAnnotators, Path outputLocation, int outputMode)
-	{
+	  public boolean processDataDir(Path dirLocation, List<String> selectedAnnotators, Path outputLocation, int outputMode)
+	  {
 		try
 		{
 			ArrayList<Path> textFileLocations = new ArrayList<Path>();
@@ -45,104 +45,95 @@ public class CorePipeline
 		{
 			return false;
 		}
-	}
-	
+	  }
+	 
 	  public boolean processData(Path fileLocation, List<String> selectedAnnotators, Path outputLocation, int outputMode)
-	    {
-	       	try 
-	       	{
-	    	 	List<String> rawData = Files.readAllLines(fileLocation, StandardCharsets.UTF_8);
-	    	 	
-	    	 	//Creates a folder of the same name as file being processed
-	    	 	outputLocation = Paths.get(outputLocation.toString(), "\\", fileLocation.toString().substring(fileLocation.toString().lastIndexOf('\\') + 1, fileLocation.toString().lastIndexOf('.')));
-	    	 	if(!Files.exists(outputLocation))
-	    	 	{
-	    	 		Files.createDirectory(outputLocation);
-	    	 	}
-	    	 	
-	    	 	Map<String, BufferedWriter> writers = new HashMap<String, BufferedWriter>();
-	    	 	for(int i = 0; i < selectedAnnotators.size(); i++)
-	    	 	{
-	    	 		String name = selectedAnnotators.get(i);
-	    	 		writers.put(name,  new BufferedWriter(new FileWriter(String.format("%s\\%s%s", outputLocation, name, ".txt"))));
-	    	 	}
-	    	 	
-	    	 	Map<String, List<String>> processedData = processData(rawData, selectedAnnotators);	    	 	
-				for(Entry<String, List<String>> entry : processedData.entrySet())
-				{
-					 for(String line : entry.getValue())
-					 {				 
-						 switch(outputMode)
-				    		{
-					    		case 0:
-					    			writers.get(entry.getKey()).write(line);
-				    				writers.get(entry.getKey()).newLine();
-					    			break;
-					    		case 1:
-					    			//Write to database
-					    			break;
-					    		case 2:
-					    			//Return to user
-					    			break;
-				    		}
-						 
-					 }
-				}
-		    	//Closes the buffer writers
-		    	for(Entry<String, BufferedWriter> entry : writers.entrySet())
-		    	{
-		    		entry.getValue().close();
-		    	}
-		    	return true;
-	    	}
-	    	catch(IOException e)
-	    	{
-	    		System.out.print(e);
-	    		return false;
-	    	}
-	    }
+	  {
+       	try 
+       	{
+    	 	List<String> rawData = Files.readAllLines(fileLocation, StandardCharsets.UTF_8);
+    	 	
+    	 	//Creates a folder of the same name as file being processed
+    	 	outputLocation = Paths.get(outputLocation.toString(), "\\", fileLocation.toString().substring(fileLocation.toString().lastIndexOf('\\') + 1, fileLocation.toString().lastIndexOf('.')));
+    	 	if(!Files.exists(outputLocation))
+    	 	{
+    	 		Files.createDirectory(outputLocation);
+    	 	}
+    	 	
+    	 	Map<String, BufferedWriter> writers = new HashMap<String, BufferedWriter>();
+    	 	for(int i = 0; i < selectedAnnotators.size(); i++)
+    	 	{
+    	 		String name = selectedAnnotators.get(i);
+    	 		writers.put(name,  new BufferedWriter(new FileWriter(String.format("%s\\%s%s", outputLocation, name, ".txt"))));
+    	 	}
+    	 	
+    	 	mf.saveMapToFile(processData(rawData, selectedAnnotators), outputLocation);
+
+	    	return true;
+    	}
+    	catch(IOException e)
+    	{
+    		System.out.print(e);
+    		return false;
+    	}
+	  }
 	  
+	  public boolean processData(List<String> rawData, List<String> selectedAnnotators, Path outputLocaton)
+	  { 
+	  	  try{
+	  		mf.saveMapToFile(processData(rawData, selectedAnnotators), outputLocaton); 
+	  	  }
+	  	  catch(Exception e)
+	  	  {
+	  		  return false;
+	  	  }
+		  
+		  return true;
+	  }
 	  
 	  public Map<String, List<String>> processData(List<String> rawData, List<String> selectedAnnotators)
-	    {
-	       
-		  		Map<String, List<String>> processedData = new HashMap<String, List<String>>();
-	    		for(String annotator : selectedAnnotators)
-	    		{
-	    				if(!processedData.containsKey(annotator))
-	    				{
-	    					processedData.put(annotator, new ArrayList<String>());
-	    				}
-	    		}
-	       		for(String line : rawData)
-	       		{
-					if(line != null)
-					{		
-				        Document doc = new Document(line);
-				    	for (Sentence sent : doc.sentences()) 
-				    	{  
+	  { 
+	  		Map<String, List<String>> processedData = new HashMap<String, List<String>>();
+    		for(String annotator : selectedAnnotators)
+    		{
+    				if(!processedData.containsKey(annotator))
+    				{
+    					processedData.put(annotator, new ArrayList<String>());
+    				}
+    		}
+       		for(String line : rawData)
+       		{
+				if(line != null)
+				{		
+			        Document doc = new Document(line);
+			    	for (Sentence sent : doc.sentences()) 
+			    	{  
 
-		    				if(selectedAnnotators.contains("Parser"))
-		    				{
-		    					processedData.get("Parser").add(parseSentence(sent));
-		    				}
-		    				if(selectedAnnotators.contains("Lemma"))
-		    				{
-		    					processedData.get("Lemma").add(lemmaSentence(sent));
-		    				}
-		    				if(selectedAnnotators.contains("POS"))
-		    				{
-		    					processedData.get("POS").add(posSentence(sent));
-		    				}
-		    				if(selectedAnnotators.contains("NER"))
-		    				{
-			    				processedData.get("NER").add(nerSentence(sent));
-		    				}
-		    			}
-		    		}
-		        }
-	       	return processedData;
-	    }
+	    				if(selectedAnnotators.contains("Parser"))
+	    				{
+	    					processedData.get("Parser").add(parseSentence(sent));
+	    				}
+	    				if(selectedAnnotators.contains("Lemma"))
+	    				{
+	    					processedData.get("Lemma").add(lemmaSentence(sent));
+	    				}
+	    				if(selectedAnnotators.contains("POS"))
+	    				{
+	    					processedData.get("POS").add(posSentence(sent));
+	    				}
+	    				if(selectedAnnotators.contains("NER"))
+	    				{
+		    				processedData.get("NER").add(nerSentence(sent));
+	    				}
+	    				if(selectedAnnotators.contains("Sentiment"))
+	    				{
+		    				processedData.get("Sentiment").add(String.valueOf(sentiment(sent.toString())));
+	    				}
+	    			}
+	    		}
+	        }
+       		return processedData;
+	   }
 	  
 		public int sentiment(String line)
 		{
@@ -168,7 +159,7 @@ public class CorePipeline
 	            }
 	        }
 	        return mainSentiment;
-		}
+	  }
 
 	  private String parseSentence(Sentence sentence)
 	  {
@@ -184,7 +175,7 @@ public class CorePipeline
 	  {
 		  return sentence.posTags().toString();
 	  }
-
+	
 	  private String nerSentence(Sentence sentence)
 	  {
 		  return sentence.nerTags().toString();

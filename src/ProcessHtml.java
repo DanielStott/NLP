@@ -4,6 +4,8 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -11,14 +13,9 @@ import org.jsoup.select.Elements;
 
 public class ProcessHtml {
 
-	public static void main(String[] args) {
-		String url = "http://www.jhbjhbhjbjhb";
-		dataFromHtml(url);
-	}
-
 	private static String[] tags = { "h1", "h2", "h3", "span", "p", "b", "i", "u" };
 
-	public static String dataFromHtml(String theURL) {
+	public static ArrayList<String> dataFromHtml(String theURL) {
 		// tags to search html page for
 		// String[] tags = { "h1", "h2", "h3", "span", "p", "b", "i", "u" };
 		URL url;
@@ -70,7 +67,7 @@ public class ProcessHtml {
 		}
 	
 		System.out.println(data);
-		return data;// Jsoup.clean(s, "", Whitelist.none(), new
+		return new ArrayList<String>(Arrays.asList(data.split("\n"))); // Jsoup.clean(s, "", Whitelist.none(), new
 					// Document.OutputSettings().prettyPrint(false));
 	}
 }

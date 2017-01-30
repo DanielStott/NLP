@@ -19,28 +19,6 @@ public class Initialize {
     	browser.open();
     	
     	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
     	/*ManageFile mf = new ManageFile();
     	CorePipeline cp = new CorePipeline();
     	//Path fileLocation = mf.selectFile();
