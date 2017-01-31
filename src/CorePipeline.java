@@ -60,13 +60,6 @@ public class CorePipeline
     	 		Files.createDirectory(outputLocation);
     	 	}
     	 	
-    	 	Map<String, BufferedWriter> writers = new HashMap<String, BufferedWriter>();
-    	 	for(int i = 0; i < selectedAnnotators.size(); i++)
-    	 	{
-    	 		String name = selectedAnnotators.get(i);
-    	 		writers.put(name,  new BufferedWriter(new FileWriter(String.format("%s\\%s%s", outputLocation, name, ".txt"))));
-    	 	}
-    	 	
     	 	mf.saveMapToFile(processData(rawData, selectedAnnotators), outputLocation);
 
 	    	return true;
