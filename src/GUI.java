@@ -1,131 +1,146 @@
-/*
- * Copyright (c) 2000-2016 TeamDev Ltd. All rights reserved.
- * TeamDev PROPRIETARY and CONFIDENTIAL.
- * Use is subject to license terms.
- */
 
-import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.dom.By;
-import com.teamdev.jxbrowser.chromium.dom.DOMDocument;
-import com.teamdev.jxbrowser.chromium.dom.DOMNode;
-import com.teamdev.jxbrowser.chromium.dom.events.*;
-import com.teamdev.jxbrowser.chromium.events.FinishLoadingEvent;
-import com.teamdev.jxbrowser.chromium.events.LoadAdapter;
-import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+import java.awt.event.ActionEvent;
 
-import org.json.*;
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import java.awt.event.ActionEvent;
-import javax.swing.ImageIcon;
+import javax.swing.JPopupMenu;
 
-
-public class GUI 
-{
-	private Browser browser = new Browser();
-    private BrowserView view = new BrowserView(browser);
-    private JFrame frame = new JFrame();
+import org.json.JSONObject;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.events.EventListener;
+import org.w3c.dom.events.Event;
+import org.w3c.dom.events.EventTarget; 
+import javafx.beans.value.ChangeListener;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Worker.State;
+import javafx.scene.Scene;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.layout.VBox;
+import javafx.scene.web.WebView;
+import javafx.stage.Stage;
+import javafx.scene.web.WebEngine;
+ 
+ 
+public class GUI extends Application {
     
-    public void open()
-    {
+    
+    @Override public void start(Stage stage) {
+    	final WebView browser = new WebView();
+        final WebEngine webEngine = browser.getEngine();
+        // create the scene
+    	
+    	String workingDir = System.getProperty("user.dir");
+        webEngine.load("file:///" + workingDir + "/GUI.html");
+        
+        
+        VBox root = new VBox();
+        root.setPrefSize(800, 600);
 
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(view, BorderLayout.CENTER);
-        frame.setSize(800, 600);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        //Set listeners
+        loadlisteners(webEngine);
+        
+    	
+        stage.setTitle("SimpleNLP");
+        
+        // Create the Scene
+        Scene scene = new Scene(root);
+
+        root.getChildren().add(createMenuBar());
+        root.getChildren().add(browser);
+        
+        stage.setScene(scene);
+
+
+        // Display the Stage
+
+        stage.show();
+        stage.setResizable(false);
+        stage.setScene(scene);  
+
         
         
-		
-        loadListener(browser);
-        createMenuBar();
-        
-        String workingDir = System.getProperty("user.dir");
-        browser.loadURL("file:///" + workingDir + "/GUI.html");
+        stage.show();
     }
-    
-    public void close()
+
+    private void loadlisteners(WebEngine webEngine)
     {
-    	browser.dispose();
-    	frame.dispose();
-    }
-    
-    
-    private void loadListener(Browser browser)
-    {
-        browser.addLoadListener(new LoadAdapter() 
+    	EventListener listener = new EventListener() {
+        	public void handleEvent (Event ev)
+        	{
+        		ProcessJSON pJSON = new ProcessJSON();
+            	if(pJSON.process(new JSONObject(
+            		webEngine.executeScript("JSON.stringify($('form').serializeObject());").toString())))
+            	{
+            		showAlert("Successfully analyse data.");
+            	}
+            	else
+            	{
+            		showAlert("Failed to analyse data.");
+            	}
+        	}
+        };
+        
+        webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() 
         {
-            @Override
-            public void onFinishLoadingFrame(FinishLoadingEvent event) 
-            {
-                if (event.isMainFrame())
-                {
-                    Browser browser = event.getBrowser();
-                    DOMDocument document = browser.getDocument();
-                    DOMNode analyseButton = document.findElement(By.id("Analyse"));
-                    if (analyseButton != null) 
-                    {
-                        analyseButton.addEventListener(DOMEventType.OnClick, new DOMEventListener() 
-                        {
-                            public void handleEvent(DOMEvent event) 
-                            {
-                            	ProcessJSON pJSON = new ProcessJSON();
-                            	if(pJSON.process(new JSONObject(
-                            			browser.executeJavaScriptAndReturnValue("JSON.stringify($('form').serializeObject());").getStringValue())))
-                            	{
-                            		browser.executeJavaScript("alert(\"Successfully analyse data.\");");
-                            	}
-                            	else
-                            	{
-                            		browser.executeJavaScript("alert(\"Failed to analyse data.\");");
-                            	}
-                            	
-                            }
-                        }, false);
-                    }
-                }
-            }
+        	public void changed(ObservableValue<? extends State> ov, State oldState, State newState) 
+        	{
+        		if (newState == State.SUCCEEDED) 
+        		{
+        			Document doc = webEngine.getDocument();
+        	        Element el = doc.getElementById("Analyse");
+        	        ((EventTarget) el).addEventListener("click", listener, false);
+        		}
+        	}
         });
     }
     
-    private void createMenuBar() {
-    	JPopupMenu.setDefaultLightWeightPopupEnabled(false);
-		JMenuBar menubar = new JMenuBar();
-		ImageIcon quit = new ImageIcon("exit.png"); // exit picture in the menu
-		ImageIcon setting = new ImageIcon("settings.png"); //
-		ImageIcon info = new ImageIcon("info.png"); //
-
-		JMenu file = new JMenu("File");
-
-
-		JMenuItem help = new JMenuItem("Help", info); // help button in the menu
-		JMenuItem settings = new JMenuItem("Settings", setting); // setting
-																	// button in
-																	// the menu
-		JMenuItem exit = new JMenuItem("Exit", quit); // exit button in the menu
-
-		exit.setToolTipText("Exit");
-		exit.addActionListener((ActionEvent event) -> {
-
-			System.exit(0);
-		});
-
-		help.addActionListener((ActionEvent event) -> {
-
-			// add action listener
-
-		});
-
-		file.add(settings);
-		file.add(help);
-		file.add(exit);
-
-		menubar.add(file);
-
-		frame.setJMenuBar(menubar);
+    private void showAlert(String message) {
+        Dialog<Void> alert = new Dialog<>();
+        alert.getDialogPane().setContentText(message);
+        alert.getDialogPane().getButtonTypes().add(ButtonType.OK);
+        alert.showAndWait();
+    }
+    
+    // TODO Add options for menu bars
+    private MenuBar createMenuBar() {
+    	   MenuBar menuBar = new MenuBar();
+    	   
+           // --- Menu File
+           Menu menuFile = new Menu("File");
+    
+           // --- Menu Edit
+           Menu menuEdit = new Menu("Settings");
+    
+           // --- Menu View
+           Menu menuView = new Menu("Help");
+    
+           menuBar.getMenus().addAll(menuFile, menuEdit, menuView);
+           
+           return menuBar;
 	}
+
+    public void open()
+    {
+    	Application.launch();
+    }
+    
+    //TODO allow stop to be called from initialize
+    @Override
+    public void stop(){
+        System.out.println("Stage is closing");
+        // Save file
+    }
+
+ 
 }
+
+
