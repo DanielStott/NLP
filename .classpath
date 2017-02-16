@@ -2,11 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="libs/jxbrowser/jxbrowser-6.11.1.jar"/>
-	<classpathentry kind="lib" path="libs/jxbrowser/jxbrowser-linux64-6.11.1.jar"/>
-	<classpathentry kind="lib" path="libs/jxbrowser/jxbrowser-mac-6.11.1.jar"/>
-	<classpathentry kind="lib" path="libs/jxbrowser/jxbrowser-win-6.11.1.jar"/>
-	<classpathentry kind="lib" path="libs/jxbrowser/license.jar"/>
 	<classpathentry kind="lib" path="libs/json.jar"/>
 	<classpathentry kind="lib" path="libs/jsoup-1.10.2.jar"/>
 	<classpathentry kind="lib" path="libs/stanford-corenlp/ejml-0.23.jar"/>

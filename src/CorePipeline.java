@@ -1,5 +1,4 @@
-import java.io.BufferedWriter;
-import java.io.FileWriter;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -164,6 +163,7 @@ public class CorePipeline
 		  return sentence.lemmas().toString();
 	  }
 	  
+	  //http://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html
 	  private String posSentence(Sentence sentence)
 	  {
 		  return sentence.posTags().toString();
