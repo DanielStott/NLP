@@ -8,23 +8,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
-import edu.stanford.nlp.ling.CoreAnnotations;
-import edu.stanford.nlp.neural.rnn.RNNCoreAnnotations;
-import edu.stanford.nlp.pipeline.Annotation;
-import edu.stanford.nlp.pipeline.StanfordCoreNLP;
-import edu.stanford.nlp.sentiment.SentimentCoreAnnotations;
+import CorePipeline.Lemma;
+import CorePipeline.NER;
+import CorePipeline.POS;
+import CorePipeline.Sentiment;
 import edu.stanford.nlp.simple.Document;
 import edu.stanford.nlp.simple.Sentence;
-import edu.stanford.nlp.trees.Tree;
-import edu.stanford.nlp.util.CoreMap;
+
 
 
 //https://blog.openshift.com/day-20-stanford-corenlp-performing-sentiment-analysis-of-twitter-using-java/ <-- read later for sentiment example
 public class CorePipeline 
 {
 	private ManageFile mf = new ManageFile();
+	private Sentiment sentiment = new Sentiment();
+	private POS pos = new POS();
+	private Lemma lem = new Lemma();
+	private NER ner = new NER();
 
 	  public boolean processDataDir(Path dirLocation, List<String> selectedAnnotators, Path outputLocation, int outputMode)
 	  {
@@ -52,8 +53,8 @@ public class CorePipeline
        	{
     	 	List<String> rawData = Files.readAllLines(fileLocation, StandardCharsets.UTF_8);
     	 	
-    	 	//Creates a folder of the same name as file being processed
-    	 	outputLocation = Paths.get(outputLocation.toString(), "\\", fileLocation.toString().substring(fileLocation.toString().lastIndexOf('\\') + 1, fileLocation.toString().lastIndexOf('.')));
+    	 	//Creates a folder of the same name as file being processed		
+    	 	outputLocation = Paths.get(outputLocation.toString(), ManageFile.pathSlash, fileLocation.toString().substring(fileLocation.toString().lastIndexOf(ManageFile.pathSlash) + 1, fileLocation.toString().lastIndexOf('.')));
     	 	if(!Files.exists(outputLocation))
     	 	{
     	 		Files.createDirectory(outputLocation);
@@ -72,11 +73,13 @@ public class CorePipeline
 	  
 	  public boolean processData(List<String> rawData, List<String> selectedAnnotators, Path outputLocaton)
 	  { 
-	  	  try{
+	  	  try
+	  	  {
 	  		mf.saveMapToFile(processData(rawData, selectedAnnotators), outputLocaton); 
 	  	  }
 	  	  catch(Exception e)
 	  	  {
+	  		  System.out.println(e);
 	  		  return false;
 	  	  }
 		  
@@ -93,6 +96,11 @@ public class CorePipeline
     					processedData.put(annotator, new ArrayList<String>());
     				}
     		}
+ 		
+    		
+    		
+    		
+    		
        		for(String line : rawData)
        		{
 				if(line != null)
@@ -107,26 +115,26 @@ public class CorePipeline
 	    				}
 	    				if(selectedAnnotators.contains("Lemma"))
 	    				{
-	    					processedData.get("Lemma").add(lemmaSentence(sent));
+	    					processedData.get("Lemma").add(lem.process(sent.toString()));
 	    				}
 	    				if(selectedAnnotators.contains("POS"))
 	    				{
-	    					processedData.get("POS").add(posSentence(sent));
+	    					processedData.get("POS").add(pos.process(sent.toString()));
 	    				}
 	    				if(selectedAnnotators.contains("NER"))
 	    				{
-		    				processedData.get("NER").add(nerSentence(sent));
+		    				processedData.get("NER").add(ner.process(sent.toString()));
 	    				}
 	    				if(selectedAnnotators.contains("Sentiment"))
 	    				{
-		    				processedData.get("Sentiment").add(String.valueOf(sentiment(sent.toString())));
+		    				processedData.get("Sentiment").add(String.valueOf(sentiment.process(sent.toString())));
 	    				}
 	    			}
 	    		}
 	        }
        		return processedData;
 	   }
-	  
+	  /*
 		public int sentiment(String line)
 		{
 	        Properties props = new Properties();
@@ -151,7 +159,7 @@ public class CorePipeline
 	            }
 	        }
 	        return mainSentiment;
-	  }
+	  }*/
 
 	  private String parseSentence(Sentence sentence)
 	  {

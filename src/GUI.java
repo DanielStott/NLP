@@ -29,7 +29,7 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.scene.web.WebEngine;
  
- 
+
 public class GUI extends Application {
     
     
@@ -76,16 +76,10 @@ public class GUI extends Application {
     	EventListener listener = new EventListener() {
         	public void handleEvent (Event ev)
         	{
+        		//TODO Make sure that processing is done on a separate thread from JavaFX 
         		ProcessJSON pJSON = new ProcessJSON();
-            	if(pJSON.process(new JSONObject(
-            		webEngine.executeScript("JSON.stringify($('form').serializeObject());").toString())))
-            	{
-            		showAlert("Successfully analyse data.");
-            	}
-            	else
-            	{
-            		showAlert("Failed to analyse data.");
-            	}
+            	showAlert(pJSON.process(new JSONObject(
+                    	webEngine.executeScript("JSON.stringify($('form').serializeObject());").toString())));
         	}
         };
         
