@@ -16,6 +16,7 @@ import java.io.IOException;
 public class ManageFile {
 
 	public Path defaultOutput = Paths.get(System.getProperty("user.dir"));
+	public static final String pathSlash = OSValidator.getOS().equals("win") ? "\\" : "/";
 	
 	public static Path selectFile()
 	{
@@ -62,7 +63,7 @@ public class ManageFile {
 			for(Entry<String, List<String>> entry : data.entrySet())
 			{
 				String annotatorName = entry.getKey();
-				writers.put(annotatorName,  new BufferedWriter(new FileWriter(String.format("%s\\%s%s", outputLocation, annotatorName, ".txt"))));
+				writers.put(annotatorName,  new BufferedWriter(new FileWriter(String.format("%s%s%s%s", outputLocation, pathSlash, annotatorName, ".txt"))));
 				 
 				for(String line : entry.getValue())
 				{				 

@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 public class ProcessJSON {
 
-	public boolean process(JSONObject json)
+	public String process(JSONObject json)
 	{
 		try
 		{
@@ -50,11 +50,13 @@ public class ProcessJSON {
 	          {
 	    		  List<String> rawData = new ArrayList<String>(Arrays.asList(inputText.split("\r\n"))); 
 	    		
-	          	  cp.processData(rawData, annotatorList, null); //null is temp
+	          	  return cp.processData(rawData, annotatorList, null) ? 
+	          			  "Successfully processed the input text." : "Failed to process the input text."; //null is temp
 	          }
 	    	  else if(url != null && url.length() > 0)
 	          {
-	    		  cp.processData(ProcessHtml.dataFromHtml(url), annotatorList, null);
+	    		  return cp.processData(ProcessHtml.dataFromHtml(url), annotatorList, null) ? 
+	    				  "Successfully Processed the URL." : "Failed to process the URL.";
 	          	
 	          }
 	    	  else if(fileList != null && !fileList.isEmpty())
@@ -65,23 +67,27 @@ public class ProcessJSON {
 	    			  
 	    			  if(ManageFile.isDirectory(file))
 	    			  {
-	    				  cp.processDataDir(Paths.get(file), annotatorList, defaultDir, 0);
+	    				  return cp.processDataDir(Paths.get(file), annotatorList, defaultDir, 0) ? 
+	    						  "Successfully processed all files in the directory." : "Failed whilst trying to processing the directory";
 	    			  }
 	    			  else if(ManageFile.isFile(file))
 	    			  {
-	    				  cp.processData(Paths.get(file), annotatorList, defaultDir, 0);
+	    				  return cp.processData(Paths.get(file), annotatorList, defaultDir, 0) ? 
+	    						  "Processed File correctly." : "Failed whilst processing the file";
 	    			  }
+	    			  else return "Failed to find file or directory.";
 	    		  }
 	    		  
 	    	  }
 	             	
 	    	}
-	    	return true;
 		}
 		catch(Exception e)
 		{
-			return false;
+			System.out.println(e);
+			return "Somthing went wrong! Error code: 101.";
 		}
+		return "Somthing went wrong! Error code: 100";
 	}
 	
 	private JSONObject validateJSON(JSONObject json)
