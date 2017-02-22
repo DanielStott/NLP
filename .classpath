@@ -16,6 +16,6 @@
 	<classpathentry kind="lib" path="libs/stanford-corenlp/stanford-corenlp-3.7.0-sources.jar"/>
 	<classpathentry kind="lib" path="libs/stanford-corenlp/xom-1.2.10-src.jar"/>
 	<classpathentry kind="lib" path="libs/stanford-corenlp/slf4j-simple.jar"/>
-	<classpathentry kind="lib" path="libs/stanford-corenlp/stanford-corenlp-3.7.0-models.jar"/>
+	<classpathentry kind="lib" path="/home/stott/git/NLP/libs/stanford-corenlp/stanford-corenlp-3.7.0-models.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

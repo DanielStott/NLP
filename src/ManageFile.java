@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import javax.swing.JFileChooser;
+
 import java.io.IOException;
 
 
@@ -26,6 +29,15 @@ public class ManageFile {
     	fd.setVisible(true);
 
     	return (fd.getDirectory() !=null && fd.getFile() != null) ? Paths.get(fd.getDirectory(), fd.getFile()): null;
+	}
+	
+	public static Path selectFolder()
+	{
+    	JFileChooser fd = new JFileChooser();
+    	fd.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+    	fd.showSaveDialog(null);
+    	
+    	return (fd.getCurrentDirectory() !=null) ? Paths.get(fd.getSelectedFile().toString()): null;
 	}
 	
 	public static ArrayList<Path> mapDirectory(Path dirLocation, ArrayList<Path> filePaths, String extenstion)

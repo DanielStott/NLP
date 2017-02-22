@@ -42,7 +42,7 @@ public class NER {
 	      for (CoreLabel token: sentence.get(TokensAnnotation.class)) {
 	    	  if(!token.get(NamedEntityTagAnnotation.class).equals("O"))
 	    	  {
-	    		 lemma += String.format("[\"%s\" defined as \"%s\"]", token.originalText(), token.index(), token.get(NamedEntityTagAnnotation.class));
+	    		 lemma += String.format("[\"%s\" defined as \"%s\"]", token.originalText(), token.get(NamedEntityTagAnnotation.class));
 	    	  }
 	      }
 
