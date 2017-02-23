@@ -20,6 +20,7 @@ public class NER {
 	{
 		props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner");
 		pipeline = new StanfordCoreNLP(props);
+		
 	}
 	
 	public String process(String text)

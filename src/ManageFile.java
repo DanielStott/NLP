@@ -19,7 +19,7 @@ import java.io.IOException;
 public class ManageFile {
 
 	public Path defaultOutput = Paths.get(System.getProperty("user.dir"));
-	public static final String pathSlash = OSValidator.getOS().equals("win") ? "\\" : "/";
+	public static final String pathSlash = OSValidator.isWindows() ? "\\" : "/";
 	
 	public static Path selectFile()
 	{
@@ -33,9 +33,12 @@ public class ManageFile {
 	
 	public static Path selectFolder()
 	{
+		if(OSValidator.isMac()) return null;
+		
     	JFileChooser fd = new JFileChooser();
     	fd.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-    	fd.showSaveDialog(null);
+    	fd.showSaveDialog(fd);
+    	
     	
     	return (fd.getCurrentDirectory() !=null) ? Paths.get(fd.getSelectedFile().toString()): null;
 	}
