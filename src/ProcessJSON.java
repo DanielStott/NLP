@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class ProcessJSON {
+public class ProcessJSON implements Runnable{
 
 	
 	public String process(JSONObject json)
@@ -147,6 +147,12 @@ public class ProcessJSON {
 			.append("url", "");
 		}
 		return json;
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

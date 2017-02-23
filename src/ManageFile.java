@@ -11,9 +11,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.UIManager;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 
 public class ManageFile {
@@ -33,10 +37,18 @@ public class ManageFile {
 	
 	public static Path selectFolder()
 	{
-    	JFileChooser fd = new JFileChooser();
+		
+		if (OSValidator.getOS().equals("osx")){
+			return null;
+		}
+		
+    	JFileChooser fd = new JFileChooser(".");
     	fd.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-    	fd.showSaveDialog(null);
-    	
+
+		JDialog dialog = new JDialog();  
+		
+		fd.showSaveDialog(dialog);
+
     	return (fd.getCurrentDirectory() !=null) ? Paths.get(fd.getSelectedFile().toString()): null;
 	}
 	
