@@ -23,7 +23,7 @@ import java.lang.reflect.InvocationTargetException;
 public class ManageFile {
 
 	public Path defaultOutput = Paths.get(System.getProperty("user.dir"));
-	public static final String pathSlash = OSValidator.getOS().equals("win") ? "\\" : "/";
+	public static final String pathSlash = OSValidator.isWindows() ? "\\" : "/";
 	
 	public static Path selectFile()
 	{
@@ -37,6 +37,7 @@ public class ManageFile {
 	
 	public static Path selectFolder()
 	{
+<<<<<<< HEAD
 		
 		if (OSValidator.getOS().equals("osx")){
 			return null;
@@ -49,6 +50,15 @@ public class ManageFile {
 		
 		fd.showSaveDialog(dialog);
 
+=======
+		if(OSValidator.isMac()) return null;
+		
+    	JFileChooser fd = new JFileChooser();
+    	fd.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+    	fd.showSaveDialog(fd);
+    	
+    	
+>>>>>>> master
     	return (fd.getCurrentDirectory() !=null) ? Paths.get(fd.getSelectedFile().toString()): null;
 	}
 	

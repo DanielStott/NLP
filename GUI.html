@@ -21,7 +21,6 @@
         });
         $('ul.tabs li').click(function(){
             var tab_id = $(this).attr('data-tab');
-
             $('ul.tabs li').removeClass('current');
             $('.tab-content').removeClass('current');
 
@@ -46,13 +45,30 @@
             } 
             });
 
-
+            
+            $(".chosen-select").chosen().change(function(e, params){
+                if($($(".chosen-select").chosen().val()).length > 0 ){  
+                    $('#inputText, #url, #filePath').keyup(function() { 
+                        if($(this).val().length > 0 ) {
+                            document.getElementById('Analyse').disabled = false;
+                        }
+                    })
+                }
+                else{
+                    document.getElementById('Analyse').disabled = true;
+                }
+            //values is an array containing all the results.
+            });
+                    
             $('#inputText, #url, #filePath').keyup(function() { 
                 if($(this).val().length > 0 ) {
-                     $("#inputText").prop('required',false);
-                     if($('.search-choice', $('.chosen-choices')).size() > 0) {
-                        document.getElementById('Analyse').disabled = false;
-                    }
+                    $(".chosen-select").chosen().change(function(e, params){
+                        if($($(".chosen-select").chosen().val()).length > 0 ){
+                            document.getElementById('Analyse').disabled = false;
+                        }
+                    //values is an array containing all the results.
+                    });
+  
                 }else{
                      $("#inputText").prop('required',true);
                     document.getElementById('Analyse').disabled = true;
@@ -467,12 +483,15 @@
         color: #ccc;
         cursor: default;
         }
-        #analyseOutput{
-            width: 180px;
+        #analyseOutput, .language{
+            width: 200px;
             height: 40px;
             border-radius: 2px;
             outline: none;
             margin-bottom: 20px;
+        }
+        .language{
+            float: right;
         }
         body{
             font-size: 1.8em;
@@ -601,7 +620,12 @@
         <h1>Analyze Text</h1>
         <!--<p>Try the sample content, or paste your own into the text box or URL field</p>-->
         <div id="tabs">
-            <h4>Select Output Format</h4>
+            <div class="col-md-12 col-xs-12">
+                <div class="row">
+                    <h4 style="float:left;">Select Output Format</h4>
+                    <h4 style="float:right;">Select Language Format</h4>
+                </div>
+            </div>
             <form id="myForm" name="outPut" method="POST">
                 <select id="analyseOutput" name="outPutFormat" required>
                     <option value=""></option>
@@ -611,6 +635,10 @@
                     <option value="JSON">JSON</option>-->
                     <option value="TEXT">TEXT</option>
                 </select>
+                <select select="chosen-language" name="language" placeholder="Select Language" class="language" required>
+                	<option value="English">English</option>
+                	<option value="Arabic">Arabic</option>
+                </select>   
                 <!--<h4>Annotations</h4>-->
                 <select class="chosen-select" name="annotators" data-placeholder="Select Annotators" multiple style="width:100%;" tabindex="6"required >
                     <option value=""></option>
@@ -620,6 +648,7 @@
                     <option value="Parser">Parse </option>
                     <option value="Sentiment">Sentiment</option>
                 </select>
+                
                 <div class="userInput">
                     <ul class="tabs">
                         <li class="tab-link current" data-tab="tab-1">
