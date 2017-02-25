@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-<<<<<<< HEAD
-	<classpathentry excluding="libs/" kind="src" path=""/>
-=======
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="libs/json.jar"/>
@@ -21,6 +18,5 @@
 	<classpathentry kind="lib" path="libs/stanford-corenlp/slf4j-simple.jar"/>
 	<classpathentry kind="lib" path="libs/stanford-corenlp/stanford-corenlp-3.7.0-models.jar"/>
 	<classpathentry kind="lib" path="libs/stanford-corenlp/stanford-arabic-corenlp-2016-10-31-models.jar"/>
->>>>>>> master
 	<classpathentry kind="output" path="bin"/>
 </classpath>
