@@ -1,5 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+<<<<<<< HEAD
 	<classpathentry excluding="libs/" kind="src" path=""/>
+=======
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="libs/json.jar"/>
+	<classpathentry kind="lib" path="libs/jsoup-1.10.2.jar"/>
+	<classpathentry kind="lib" path="libs/stanford-corenlp/ejml-0.23.jar"/>
+	<classpathentry kind="lib" path="libs/stanford-corenlp/javax.json.jar"/>
+	<classpathentry kind="lib" path="libs/stanford-corenlp/joda-time.jar"/>
+	<classpathentry kind="lib" path="libs/stanford-corenlp/jollyday.jar"/>
+	<classpathentry kind="lib" path="libs/stanford-corenlp/protobuf.jar"/>
+	<classpathentry kind="lib" path="libs/stanford-corenlp/slf4j-api.jar"/>
+	<classpathentry kind="lib" path="libs/stanford-corenlp/stanford-corenlp-3.7.0.jar"/>
+	<classpathentry kind="lib" path="libs/stanford-corenlp/xom.jar"/>
+	<classpathentry kind="lib" path="libs/stanford-corenlp/stanford-corenlp-3.7.0-javadoc.jar"/>
+	<classpathentry kind="lib" path="libs/stanford-corenlp/stanford-corenlp-3.7.0-sources.jar"/>
+	<classpathentry kind="lib" path="libs/stanford-corenlp/xom-1.2.10-src.jar"/>
+	<classpathentry kind="lib" path="libs/stanford-corenlp/slf4j-simple.jar"/>
+	<classpathentry kind="lib" path="libs/stanford-corenlp/stanford-corenlp-3.7.0-models.jar"/>
+	<classpathentry kind="lib" path="libs/stanford-corenlp/stanford-arabic-corenlp-2016-10-31-models.jar"/>
+>>>>>>> master
 	<classpathentry kind="output" path="bin"/>
 </classpath>

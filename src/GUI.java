@@ -71,15 +71,31 @@ public class GUI extends Application {
         stage.show();
     }
 
+    String outcome;
     private void loadlisteners(WebEngine webEngine)
     {
     	EventListener listener = new EventListener() {
         	public void handleEvent (Event ev)
         	{
-        		//TODO Make sure that processing is done on a separate thread from JavaFX 
-        		ProcessJSON pJSON = new ProcessJSON();
-            	showAlert(pJSON.process(new JSONObject(
-                    	webEngine.executeScript("JSON.stringify($('form').serializeObject());").toString())));
+
+            	ProcessJSON pJSON = new ProcessJSON();
+				String x = webEngine.executeScript("JSON.stringify($('form').serializeObject());").toString();
+
+				Thread thread1 = new Thread(new Runnable() {
+					public void run() {
+						outcome = pJSON.process(new JSONObject(x));
+					}
+				});
+				thread1.start();
+
+				// Finish running thread
+				try {
+					thread1.join();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				showAlert(outcome);
+         
         	}
         };
         
