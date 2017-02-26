@@ -26,10 +26,15 @@ public class ProcessJSON implements Runnable {
 			String outPutFormat = json.get("outPutFormat").toString();
 			String inputText = json.get("inputText").toString();
 			String url = json.get("url").toString();
+			String language = json.getString("language");
+			
 			if((annotators != null && annotators.length() != 0) && 
 					(files != null && files.length() != 0) && 
-					(outPutFormat != null && outPutFormat != ""))
+					(outPutFormat != null && outPutFormat != "") && 
+					(language != null && language != ""))
 			{
+				Settings.language = language;
+				
 				List<String> annotatorList = new ArrayList<String>();
 				for(Object annotator: annotators)
 				{
@@ -140,12 +145,17 @@ public class ProcessJSON implements Runnable {
 			{
 				json.append("url", "");
 			}
+			if(!json.has("language"))
+			{
+				json.append("language", "English");
+			}
 
 		}
 		else
 		{
 			json.append("annotators", new JSONArray() {})
 			.append("files", new JSONArray() {})
+			.append("language", "English")
 			.append("outPutFormat", "")
 			.append("inputText", "")
 			.append("url", "");

@@ -3,6 +3,7 @@ import java.awt.Frame;
 import java.util.List;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -17,7 +18,11 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 
 import java.io.IOException;
+<<<<<<< HEAD
 import java.lang.reflect.InvocationTargetException;
+=======
+import java.io.OutputStreamWriter;
+>>>>>>> master
 
 
 public class ManageFile {
@@ -97,7 +102,8 @@ public class ManageFile {
 			for(Entry<String, List<String>> entry : data.entrySet())
 			{
 				String annotatorName = entry.getKey();
-				writers.put(annotatorName,  new BufferedWriter(new FileWriter(String.format("%s%s%s%s", outputLocation, pathSlash, annotatorName, ".txt"))));
+				//writers.put(annotatorName,  new BufferedWriter(new FileWriter(String.format("%s%s%s%s", outputLocation, pathSlash, annotatorName, ".txt"))));
+				writers.put(annotatorName, new BufferedWriter(new OutputStreamWriter(new FileOutputStream(String.format("%s%s%s%s", outputLocation, pathSlash, annotatorName, ".txt")), "UTF8")));
 				 
 				for(String line : entry.getValue())
 				{				 

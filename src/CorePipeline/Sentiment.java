@@ -23,13 +23,13 @@ public class Sentiment {
 		pipeline = new StanfordCoreNLP(props);
 	}
 	
-	public int process(String line)
+	public int process(String text)
 	{
         int mainSentiment = 0;
-        if (line != null && line.length() > 0) 
+        if (text != null && text.length() > 0) 
         {
             int longest = 0;
-            Annotation annotation = pipeline.process(line);
+            Annotation annotation = pipeline.process(text);
             for (CoreMap sentence : annotation.get(CoreAnnotations.SentencesAnnotation.class)) 
             {
                 Tree tree = sentence.get(SentimentCoreAnnotations.SentimentAnnotatedTree.class);

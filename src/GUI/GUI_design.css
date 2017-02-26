@@ -51,7 +51,7 @@ textarea{
             background: #47ea6b;
         }
         #back_button:before{
-            font: normal normal normal 14px/1 FontAwesome;
+            font: normal normal normal 14px FontAwesome;
             font-size: inherit;
             text-rendering: auto;
             margin-right: 10px;
@@ -74,7 +74,7 @@ textarea{
             background: #47ea6b;
         }
         #redirect_link:before{
-            font: normal normal normal 14px/1 FontAwesome;
+            font: normal normal normal 14px FontAwesome;
             font-size: inherit;
             text-rendering: auto;
             margin-right: 10px;
