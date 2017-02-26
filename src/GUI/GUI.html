@@ -36,6 +36,8 @@
                 <select select="chosen-language" name="language" placeholder="Select Language" class="language" required>
                 	<option value="English">English</option>
                 	<option value="Arabic">Arabic</option>
+                	<option value="French">French</option>
+                	<option value="Spanish">Spanish</option>
                 </select>   
                 <!--<h4>Annotations</h4>-->
                 <select class="chosen-select" name="annotators" data-placeholder="Select Annotators" multiple style="width:100%;" tabindex="6"required >
@@ -96,19 +98,7 @@
 
     <!--New Container Display Result-->
     <div class="container" id="result_tab">
-        <textarea class="form-control" cols="60" rows="30" spellcheck="false">
-        <!--Add  text here-->
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title></title>
-        </head>
-        <body>
-            <h1>Example</h1>
-        </body>
-        </html>
-
-        </textarea> 
+        <textarea class="form-control" cols="60" id="result_tab_area" rows="30" spellcheck="false"></textarea> 
         
         <button id="back_button" onclick="goBack()">Back</button>
     </div>

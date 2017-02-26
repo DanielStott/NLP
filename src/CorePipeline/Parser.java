@@ -12,23 +12,23 @@ public class Parser {
 
 	private Properties props = new Properties();
 	private StanfordCoreNLP pipeline;
-	
-	
+
+
 	public Parser()
 	{
 		props.setProperty("annotators", "tokenize, ssplit, pos");
 		pipeline = new StanfordCoreNLP(props);
 	}
-	
+
 	public String process(String text)
 	{
-	   Document doc = new Document(text);
-	   String parser = "";
-	   for(Sentence sent : doc.sentences())
-	   {
-		   parser += sent.parse().toString();
-	   }
-	   return parser.equals("") ? "Failed to process this line" : parser;
+		Document doc = new Document(text);
+		String parser = "";
+		for(Sentence sent : doc.sentences())
+		{
+			parser += sent.parse().toString();
+		}
+		return parser.equals("") ? "Failed to process this line" : parser;
 	}
-	
+
 }
