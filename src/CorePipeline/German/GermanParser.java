@@ -1,4 +1,4 @@
-package CorePipeline.Chinese;
+package CorePipeline.German;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,23 +13,18 @@ import edu.stanford.nlp.util.CoreMap;
 import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.TokensAnnotation; 
 
-public class ChineseParser {
+public class GermanParser {
 
 	private Properties props = new Properties();
 	private StanfordCoreNLP pipeline;
 	private LexicalizedParser lp;
 
-	public ChineseParser()
+	public GermanParser()
 	{
 		props.setProperty("annotators", "tokenize, ssplit, pos, parse");
-		props.setProperty("tokenize.language", "zh");
-		props.setProperty("segment.model", "edu/stanford/nlp/models/segmenter/chinese/ctb.gz");
-		props.setProperty("segment.sighanCorporaDict", "edu/stanford/nlp/models/segmenter/chinese");
-		props.setProperty("segment.serDictionary", "edu/stanford/nlp/models/segmenter/chinese/dict-chris6.ser.gz");
-		props.setProperty("segment.sighanPostProcessing", "true");
-		props.setProperty("pos.model", "edu/stanford/nlp/models/pos-tagger/chinese-distsim/chinese-distsim.tagger");
-		props.setProperty("parse.model", "edu/stanford/nlp/models/srparser/chineseSR.ser.gz");
-		lp = LexicalizedParser.loadModel("edu/stanford/nlp/models/lexparser/chinesePCFG.ser.gz"); 
+		props.setProperty("tokenize.language", "de");
+		props.setProperty("pos.model", "edu/stanford/nlp/models/pos-tagger/german/german-hgc.tagger");
+		lp = LexicalizedParser.loadModel("edu/stanford/nlp/models/lexparser/germanFactored.ser.gz"); 
 		pipeline = new StanfordCoreNLP(props);
 	}
 

@@ -1,4 +1,4 @@
-package CorePipeline.Chinese;
+package CorePipeline.German;
 
 import java.util.List;
 import java.util.Properties;
@@ -13,21 +13,17 @@ import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
 
-public class ChinesePOS {
+public class GermanPOS {
 
 	private Properties props = new Properties();
 	private StanfordCoreNLP pipeline;
 	
 	
-	public ChinesePOS()
+	public GermanPOS()
 	{
 		props.setProperty("annotators", "tokenize, ssplit, pos");
-		props.setProperty("tokenize.language", "zh");
-		props.setProperty("segment.model", "edu/stanford/nlp/models/segmenter/chinese/ctb.gz");
-		props.setProperty("segment.sighanCorporaDict", "edu/stanford/nlp/models/segmenter/chinese");
-		props.setProperty("segment.serDictionary", "edu/stanford/nlp/models/segmenter/chinese/dict-chris6.ser.gz");
-		props.setProperty("segment.sighanPostProcessing", "true");
-		props.setProperty("pos.model", "edu/stanford/nlp/models/pos-tagger/chinese-distsim/chinese-distsim.tagger");
+		props.setProperty("tokenize.language", "de");
+		props.setProperty("pos.model", "edu/stanford/nlp/models/pos-tagger/german/german-hgc.tagger");
 		pipeline = new StanfordCoreNLP(props);
 	}
 	

@@ -21,6 +21,9 @@ import CorePipeline.Chinese.ChinesePOS;
 import CorePipeline.Chinese.ChineseParser;
 import CorePipeline.French.FrenchPOS;
 import CorePipeline.French.FrenchParser;
+import CorePipeline.German.GermanNER;
+import CorePipeline.German.GermanPOS;
+import CorePipeline.German.GermanParser;
 import CorePipeline.Spanish.SpanishNER;
 import CorePipeline.Spanish.SpanishPOS;
 import CorePipeline.Spanish.SpanishParser;
@@ -49,6 +52,11 @@ public class CorePipeline
 	private ChinesePOS cPOS;
 	private ChineseParser cParser;
 	private ChineseNER cNER;
+	
+	private GermanPOS gPOS;
+	private GermanParser gParser;
+	private GermanNER gNER;
+
 
 	private List<String> selectedAnnotators;
 
@@ -66,6 +74,7 @@ public class CorePipeline
 					if(Settings.language.equals("English")) ner = new NER();
 					else if (Settings.language.equals("Spanish")) sNER = new SpanishNER();
 					else if (Settings.language.equals("Chinese")) cNER = new ChineseNER();
+					else if (Settings.language.equals("German")) gNER = new GermanNER();
 				break;
 				case("Lemma"):
 					lem = new Lemma();
@@ -76,6 +85,7 @@ public class CorePipeline
 					else if (Settings.language.equals("French")) fPOS = new FrenchPOS();
 					else if (Settings.language.equals("Spanish")) sPOS = new SpanishPOS();
 					else if (Settings.language.equals("Chinese")) cPOS = new ChinesePOS();
+					else if (Settings.language.equals("German")) gPOS = new GermanPOS();
 				break;
 				case("Parser"):
 					if(Settings.language.equals("English")) parser = new Parser();
@@ -83,6 +93,7 @@ public class CorePipeline
 					else if (Settings.language.equals("French")) fParser = new FrenchParser();
 					else if (Settings.language.equals("Spanish")) sParser = new SpanishParser();
 					else if (Settings.language.equals("Chinese")) cParser = new ChineseParser();
+					else if (Settings.language.equals("German")) gParser = new GermanParser();
 				break;
 				case("Sentiment"):
 					sentiment = new Sentiment();
@@ -189,6 +200,10 @@ public class CorePipeline
 					{
 						processedData.get("Parser").add(cParser.process(line));
 					}
+					else if(Settings.language.equals("German"))
+					{
+						processedData.get("Parser").add(gParser.process(line));
+					}
 
 					else
 					{
@@ -217,6 +232,10 @@ public class CorePipeline
 					{
 						processedData.get("POS").add(cPOS.process(line));
 					}
+					else if(Settings.language.equals("German"))
+					{
+						processedData.get("POS").add(gPOS.process(line));
+					}
 					else
 					{
 						processedData.get("POS").add(pos.process(line));
@@ -232,6 +251,10 @@ public class CorePipeline
 					else if(Settings.language.equals("Chinese"))
 					{
 						processedData.get("NER").add(cNER.process(line));
+					}
+					else if(Settings.language.equals("German"))
+					{
+						processedData.get("NER").add(gNER.process(line));
 					}
 					else
 					{

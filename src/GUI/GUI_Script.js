@@ -228,6 +228,10 @@
                     $('li:nth-child(3)').hide();
                     $('li:nth-child(5)').hide();
                 }
+		else if(global_var=="German"){
+                    $('li:nth-child(2)').hide();
+                    $('li:nth-child(5)').hide();
+                }
 		else if(global_var=="Spanish"){
                     $('li:nth-child(2)').hide();
                     $('li:nth-child(5)').hide();
