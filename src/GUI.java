@@ -2,13 +2,12 @@
 import java.util.List;
 import java.util.Map;
 
-
 import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.events.EventListener;
 import org.w3c.dom.events.Event;
-import org.w3c.dom.events.EventTarget; 
+import org.w3c.dom.events.EventTarget;
 import javafx.beans.value.ChangeListener;
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
@@ -23,12 +22,12 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.scene.web.WebEngine;
 
-
 public class GUI extends Application {
 	private static WebView browser;
 	private static WebEngine webEngine;
 
-	@Override public void start(Stage stage) {
+	@Override
+	public void start(Stage stage) {
 		browser = new WebView();
 		webEngine = browser.getEngine();
 		// create the scene
@@ -36,13 +35,11 @@ public class GUI extends Application {
 		String workingDir = System.getProperty("user.dir");
 		webEngine.load("file:///" + workingDir + "/src/GUI/GUI.html");
 
-
 		VBox root = new VBox();
 		root.setPrefSize(800, 600);
 
-		//Set listeners
+		// Set listeners
 		loadlisteners(webEngine);
-
 
 		stage.setTitle("SimpleNLP");
 
@@ -54,36 +51,51 @@ public class GUI extends Application {
 
 		stage.setScene(scene);
 
-
 		// Display the Stage
 
 		stage.show();
 		stage.setResizable(false);
-		stage.setScene(scene);  
-
-
+		stage.setScene(scene);
 
 		stage.show();
 	}
 
-	private void loadlisteners(WebEngine webEngine)
-	{
+	String outcome;
+
+	private void loadlisteners(WebEngine webEngine) {
 		EventListener listener = new EventListener() {
-			public void handleEvent (Event ev)
-			{
-				//TODO Make sure that processing is done on a separate thread from JavaFX 
+			public void handleEvent(Event ev) {
+				// TODO Make sure that processing is done on a separate thread
+				// from JavaFX
+//				 ProcessJSON pJSON = new ProcessJSON();
+//				 showAlert(pJSON.process(new JSONObject(
+//				 webEngine.executeScript("JSON.stringify($('form').serializeObject());").toString())));
+				
+// /*
 				ProcessJSON pJSON = new ProcessJSON();
-				showAlert(pJSON.process(new JSONObject(
-						webEngine.executeScript("JSON.stringify($('form').serializeObject());").toString())));
+				String x = webEngine.executeScript("JSON.stringify($('form').serializeObject());").toString();
+
+				Thread thread1 = new Thread(new Runnable() {
+					public void run() {
+						outcome = pJSON.process(new JSONObject(x));
+					}
+				});
+				thread1.start();
+
+				// Finish running thread
+				try {
+					thread1.join();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				showAlert(outcome);
+//*/
 			}
 		};
 
-		webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() 
-		{
-			public void changed(ObservableValue<? extends State> ov, State oldState, State newState) 
-			{
-				if (newState == State.SUCCEEDED) 
-				{
+		webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
+			public void changed(ObservableValue<? extends State> ov, State oldState, State newState) {
+				if (newState == State.SUCCEEDED) {
 					Document doc = webEngine.getDocument();
 					Element el = doc.getElementById("Analyse");
 					((EventTarget) el).addEventListener("click", listener, false);
@@ -117,74 +129,62 @@ public class GUI extends Application {
 		return menuBar;
 	}
 
-	public static void setResult(Map<String , List<String>> data)
-	{
+	public static void setResult(Map<String, List<String>> data) {
 		String allData = "";
-		if(data.containsKey("Lemma"))
-		{
+		if (data.containsKey("Lemma")) {
 			allData += "---- LEMMA ---- \n";
-			for(String line : data.get("Lemma"))
-			{
+			for (String line : data.get("Lemma")) {
 				allData += line + "\n";
-				
+
 			}
 			allData += "\n\n\n\n";
 		}
-		if(data.containsKey("Parser"))
-		{
+		if (data.containsKey("Parser")) {
 			allData += "---- Parser ---- \n";
-			for(String line : data.get("Parser"))
-			{
-				allData += line + "\n";;
+			for (String line : data.get("Parser")) {
+				allData += line + "\n";
+				;
 			}
 			allData += "\n\n\n\n";
 		}
-		if(data.containsKey("POS"))
-		{
+		if (data.containsKey("POS")) {
 			allData += "---- POS ---- \n";
-			for(String line : data.get("POS"))
-			{
-				allData += line + "\n";;
+			for (String line : data.get("POS")) {
+				allData += line + "\n";
+				;
 			}
 			allData += "\n\n\n\n";
 		}
-		if(data.containsKey("NER"))
-		{
+		if (data.containsKey("NER")) {
 			allData += "---- NER ---- \n";
-			for(String line : data.get("NER"))
-			{
-				allData += line + "\n";;
+			for (String line : data.get("NER")) {
+				allData += line + "\n";
+				;
 			}
 			allData += "\n\n\n\n";
 		}
-		if(data.containsKey("Sentiment"))
-		{
+		if (data.containsKey("Sentiment")) {
 			allData += "---- Sentiment ---- \n";
-			for(String line : data.get("Sentiment"))
-			{
-				allData += line + "\n";;
+			for (String line : data.get("Sentiment")) {
+				allData += line + "\n";
+				;
 			}
 			allData += "\n\n\n\n";
 		}
-		allData = allData.replace("'", "\\'")
-				.replace(System.getProperty("line.separator"), "\\n")
-				.replace("\n", "\\n")
+		allData = allData.replace("'", "\\'").replace(System.getProperty("line.separator"), "\\n").replace("\n", "\\n")
 				.replace("\r", "\\n");
 		webEngine.executeScript(String.format("$('#result_tab_area').text('%s');", allData));
 	}
 
-	public void open()
-	{
+	public void open() {
 		Application.launch();
 	}
 
-	//TODO allow stop to be called from initialize
+	// TODO allow stop to be called from initialize
 	@Override
-	public void stop(){
+	public void stop() {
 		System.out.println("Stage is closing");
 		// Save file
 	}
 
-
 }
-

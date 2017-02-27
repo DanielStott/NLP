@@ -21,6 +21,7 @@ import CorePipeline.French.FrenchParser;
 import CorePipeline.Spanish.SpanishNER;
 import CorePipeline.Spanish.SpanishPOS;
 import CorePipeline.Spanish.SpanishParser;
+import javafx.application.Platform;
 
 //https://blog.openshift.com/day-20-stanford-corenlp-performing-sentiment-analysis-of-twitter-using-java/ <-- read later for sentiment example
 public class CorePipeline 
@@ -134,7 +135,13 @@ public class CorePipeline
 		{
 			Map<String , List<String>> allData = processData(rawData);
 			mf.saveMapToFile(allData, outputLocation); 
-			GUI.setResult(allData);
+			
+			Platform.runLater(new Runnable() {
+			  @Override public void run() { 
+				  GUI.setResult(allData);
+			  }
+			});
+			
 		}
 		catch(Exception e)
 		{

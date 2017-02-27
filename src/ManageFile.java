@@ -18,11 +18,11 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 
 import java.io.IOException;
-<<<<<<< HEAD
+
 import java.lang.reflect.InvocationTargetException;
-=======
+
 import java.io.OutputStreamWriter;
->>>>>>> master
+
 
 
 public class ManageFile {
@@ -42,28 +42,15 @@ public class ManageFile {
 	
 	public static Path selectFolder()
 	{
-<<<<<<< HEAD
-		
-		if (OSValidator.getOS().equals("osx")){
-			return null;
-		}
-		
-    	JFileChooser fd = new JFileChooser(".");
-    	fd.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
-		JDialog dialog = new JDialog();  
-		
-		fd.showSaveDialog(dialog);
-
-=======
 		if(OSValidator.isMac()) return null;
-		
+		 
     	JFileChooser fd = new JFileChooser();
     	fd.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
     	fd.showSaveDialog(fd);
     	
     	
->>>>>>> master
+
     	return (fd.getCurrentDirectory() !=null) ? Paths.get(fd.getSelectedFile().toString()): null;
 	}
 	

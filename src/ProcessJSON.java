@@ -7,11 +7,8 @@ import java.nio.file.Paths;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-<<<<<<< HEAD
-public class ProcessJSON implements Runnable{
-=======
-public class ProcessJSON implements Runnable {
->>>>>>> master
+public class ProcessJSON  {
+
 
 	
 	public String process(JSONObject json)
@@ -59,7 +56,7 @@ public class ProcessJSON implements Runnable {
 				if(inputText != null && inputText.length() > 0)
 				{
 					List<String> rawData = new ArrayList<String>(Arrays.asList(inputText.split("\r\n"))); 
-
+System.out.println("sdfsdff gv g" + rawData  +"     " + ManageFile.selectFolder());
 					return cp.processData(rawData, ManageFile.selectFolder()) ? 
 							"Successfully processed the input text." : "Failed to process the input text."; //null is temp
 				}
@@ -163,15 +160,10 @@ public class ProcessJSON implements Runnable {
 		return json;
 	}
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> master
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		
-	}
+//	@Override
+//	public void run() {
+//		// TODO Auto-generated method stub
+//		
+//	}
 
 }
