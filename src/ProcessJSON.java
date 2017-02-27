@@ -56,7 +56,6 @@ public class ProcessJSON  {
 				if(inputText != null && inputText.length() > 0)
 				{
 					List<String> rawData = new ArrayList<String>(Arrays.asList(inputText.split("\r\n"))); 
-System.out.println("sdfsdff gv g" + rawData  +"     " + ManageFile.selectFolder());
 					return cp.processData(rawData, ManageFile.selectFolder()) ? 
 							"Successfully processed the input text." : "Failed to process the input text."; //null is temp
 				}

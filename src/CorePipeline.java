@@ -119,7 +119,11 @@ public class CorePipeline
 
 			Map<String , List<String>> allData = processData(rawData); 
 			mf.saveMapToFile(allData, outputLocation);
-			GUI.setResult(allData);
+			Platform.runLater(new Runnable() {
+				  @Override public void run() { 
+					  GUI.setResult(allData);
+				  }
+				});
 			return true;
 		}
 		catch(IOException e)
