@@ -1,6 +1,6 @@
 import javafx.application.Application;
 
-public class Initialize {
+public class Initialise {
 	
 	
     public static void main(String[] args) throws Exception { 
