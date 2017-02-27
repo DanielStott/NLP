@@ -7,8 +7,14 @@ import java.nio.file.Paths;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class ProcessJSON implements Runnable {
+public class ProcessJSON {
 
+	private static List<String> annotatorList= new ArrayList<String>();
+
+	public static List<String> annotatorList()
+    {
+        return annotatorList;
+    }
 	
 	public String process(JSONObject json)
 	{
@@ -31,7 +37,7 @@ public class ProcessJSON implements Runnable {
 			{
 				Settings.language = language;
 				
-				List<String> annotatorList = new ArrayList<String>();
+				//List<String> annotatorList = new ArrayList<String>();
 				for(Object annotator: annotators)
 				{
 					if (annotator instanceof String) 
@@ -49,8 +55,8 @@ public class ProcessJSON implements Runnable {
 					}
 				}
 
-				CorePipeline cp = new CorePipeline(annotatorList);
-
+				// Run corepipline using callable new thread
+		        CorePipeline cp = CorePipeline.CorePipelineThread();
 
 				if(inputText != null && inputText.length() > 0)
 				{
@@ -159,12 +165,5 @@ public class ProcessJSON implements Runnable {
 		return json;
 	}
 
-
-
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		
-	}
 
 }

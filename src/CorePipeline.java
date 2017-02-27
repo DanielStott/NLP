@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 
 import CorePipeline.Lemma;
 import CorePipeline.NER;
@@ -247,5 +252,25 @@ public class CorePipeline
 		return processedData;
 	}
 
+	public static CorePipeline CorePipelineThread() {
+	    CorePipeline x = null;
+	    final ExecutorService service;
+        final Future<CorePipeline>  task;
+        
+        service = Executors.newFixedThreadPool(1);        
+        task = service.submit(new Callable<CorePipeline>() {
+	        public CorePipeline call() throws Exception {
+	        	return new CorePipeline(ProcessJSON.annotatorList());
+	        }
+	    });
+	    
+	    try {
+	        x = task.get();
+	    } catch (Exception e) {
+	    	System.out.println(e);
+	    }
+	    service.shutdown();
+	    return x;
+	}
 
 }
