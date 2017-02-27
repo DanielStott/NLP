@@ -158,7 +158,8 @@
 
             $(this).addClass('current');
             $("#"+tab_id).addClass('current');
-            })
+        })
+        
         $(".reset").hover(function(){
             $('.glyphicon-refresh').css('-webkit-transform','rotate(360deg)');
             $('.glyphicon-refresh').css('-moz-transform','rotate(360deg)');
@@ -215,32 +216,40 @@
             $('.chosen-choices').click(function(){
                 var global_var = $( ".language option:selected" ).text();
                 if(global_var=="Arabic"){
-                    $('li:nth-child(2)').hide();
-                    $('li:nth-child(3)').hide();
-                    $('li:nth-child(5)').hide();
+                    $('.active-result:nth-child(2)').hide();
+                    $('.active-result:nth-child(3)').hide();
+                    $('.active-result:nth-child(5)').hide();
+                    // $(".chosen-select option:contains('Lemmas')").attr("disabled","disabled");
+                    // $(".chosen-select option:contains('Named Entities')").attr("disabled","disabled");
+                    // $(".chosen-select option:contains('Sentiment')").attr("disabled","disabled");
                 }
  		else if(global_var=="French"){
-                    $('li:nth-child(2)').hide();
-                    $('li:nth-child(3)').hide();
-                    $('li:nth-child(5)').hide();
+                    $('.active-result:nth-child(2)').hide();
+                    $('.active-result:nth-child(3)').hide();
+                    $('.active-result:nth-child(5)').hide();
+                    // $(".chosen-select option:contains('Lemmas')").attr("disabled","disabled");
+                    // $(".chosen-select option:contains('Named Entities')").attr("disabled","disabled");
+                    // $(".chosen-select option:contains('Sentiment')").attr("disabled","disabled");
                 }
 		else if(global_var=="Spanish"){
-                    $('li:nth-child(2)').hide();
-                    $('li:nth-child(5)').hide();
+                    $('.active-result:nth-child(2)').hide();
+                    $('.active-result:nth-child(5)').hide();
                 }   
                 else{
-                    $('li:nth-child(2)').show();
-                    $('li:nth-child(3)').show();
-                    $('li:nth-child(5)').show();
+                    $('.active-result:nth-child(2)').show();
+                    $('.active-result:nth-child(3)').show();
+                    $('.active-result:nth-child(5)').show();
                 }
             })
 
         });
 
-                $(function(){
+        $(function(){
             $(".chosen-select").chosen();
         });
-
+        function eraseText(){
+            document.getElementById("inputText").value="";
+        }
         function eraseUrl(){
             document.getElementById("url").value="";
         }
