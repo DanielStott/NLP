@@ -250,7 +250,6 @@
         function eraseText(){
             document.getElementById("inputText").value="";
         }
-        functio
         function eraseUrl(){
             document.getElementById("url").value="";
         }
