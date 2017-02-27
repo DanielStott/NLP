@@ -21,6 +21,9 @@ import CorePipeline.French.FrenchParser;
 import CorePipeline.Spanish.SpanishNER;
 import CorePipeline.Spanish.SpanishPOS;
 import CorePipeline.Spanish.SpanishParser;
+import CorePipeline.German.GermanNER;
+import CorePipeline.German.GermanPOS;
+import CorePipeline.German.GermanParser;
 
 //https://blog.openshift.com/day-20-stanford-corenlp-performing-sentiment-analysis-of-twitter-using-java/ <-- read later for sentiment example
 public class CorePipeline 
@@ -42,6 +45,10 @@ public class CorePipeline
 	private SpanishPOS sPOS;
 	private SpanishParser sParser;
 	private SpanishNER sNER;
+	
+	private GermanPOS gPOS;
+	private GermanParser gParser;
+	private GermanNER gNER;
 
 	private List<String> selectedAnnotators;
 
@@ -58,6 +65,7 @@ public class CorePipeline
 				case("NER"):
 					if(Settings.language.equals("English")) ner = new NER();
 					else if (Settings.language.equals("Spanish")) sNER = new SpanishNER();
+					else if (Settings.language.equals("German")) gNER = new GermanNER();
 				break;
 				case("Lemma"):
 					lem = new Lemma();
@@ -67,12 +75,14 @@ public class CorePipeline
 					else if (Settings.language.equals("Arabic")) aPOS = new ArabicPOS();
 					else if (Settings.language.equals("French")) fPOS = new FrenchPOS();
 					else if (Settings.language.equals("Spanish")) sPOS = new SpanishPOS();
+					else if (Settings.language.equals("German")) gPOS = new GermanPOS();
 				break;
 				case("Parser"):
 					if(Settings.language.equals("English")) parser = new Parser();
 					else if (Settings.language.equals("Arabic")) aParser = new ArabicParser();
 					else if (Settings.language.equals("French")) fParser = new FrenchParser();
 					else if (Settings.language.equals("Spanish")) sParser = new SpanishParser();
+					else if (Settings.language.equals("German")) gParser = new GermanParser();
 				break;
 				case("Sentiment"):
 					sentiment = new Sentiment();
@@ -119,6 +129,8 @@ public class CorePipeline
 			Map<String , List<String>> allData = processData(rawData); 
 			mf.saveMapToFile(allData, outputLocation);
 			GUI.setResult(allData);
+			
+			
 			return true;
 		}
 		catch(IOException e)
@@ -160,7 +172,6 @@ public class CorePipeline
 		{
 			if(line != null && !line.equals(""))
 			{		
-
 				if(selectedAnnotators.contains("Parser"))
 				{
 					if(Settings.language.equals("Arabic"))
@@ -174,6 +185,10 @@ public class CorePipeline
 					else if(Settings.language.equals("Spanish"))
 					{
 						processedData.get("Parser").add(sParser.process(line));
+					}
+					else if(Settings.language.equals("German"))
+					{
+						processedData.get("Parser").add(gParser.process(line));
 					}
 					else
 					{
@@ -198,6 +213,10 @@ public class CorePipeline
 					{
 						processedData.get("POS").add(sPOS.process(line));
 					}
+					else if(Settings.language.equals("German"))
+					{
+						processedData.get("POS").add(gPOS.process(line));
+					}
 					else
 					{
 						processedData.get("POS").add(pos.process(line));
@@ -209,6 +228,10 @@ public class CorePipeline
 					if(Settings.language.equals("Spanish"))
 					{
 						processedData.get("NER").add(sNER.process(line));
+					}
+					else if(Settings.language.equals("German"))
+					{
+						processedData.get("NER").add(gNER.process(line));
 					}
 					else
 					{

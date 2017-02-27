@@ -38,7 +38,7 @@ public class GUI extends Application {
 
 
 		VBox root = new VBox();
-		root.setPrefSize(800, 600);
+		root.setPrefSize(Settings.GUIWidth, Settings.GUIHeight);
 
 		//Set listeners
 		loadlisteners(webEngine);

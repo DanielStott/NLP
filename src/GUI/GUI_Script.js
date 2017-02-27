@@ -235,6 +235,10 @@
                     $('.active-result:nth-child(2)').hide();
                     $('.active-result:nth-child(5)').hide();
                 }   
+		else if(global_var=="German"){
+                    $('.active-result:nth-child(2)').hide();
+                    $('.active-result:nth-child(5)').hide();
+                }
                 else{
                     $('.active-result:nth-child(2)').show();
                     $('.active-result:nth-child(3)').show();
