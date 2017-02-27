@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import CorePipeline.Lemma;
 import CorePipeline.NER;
@@ -81,6 +85,10 @@ public class CorePipeline
 			}
 
 		}
+	}
+
+	public CorePipeline() {
+		// TODO Auto-generated constructor stub
 	}
 
 	public boolean processDataDir(Path dirLocation, Path outputLocation, int outputMode)
@@ -237,6 +245,33 @@ public class CorePipeline
 		}
 		return processedData;
 	}
+	
+	
+	public static CorePipeline CorePipelineThread() {
+	    CorePipeline x = null;
+	    final ExecutorService service;
+        final Future<CorePipeline>  task;
+        
+        service = Executors.newFixedThreadPool(1);        
+        task    = service.submit(new Callable<CorePipeline>() {
+	        public CorePipeline call() throws Exception {
+	            // the other thread
+	        	return new CorePipeline(ProcessJSON.annotatorList());
+	        }
+	    });
+	    
+	    try {
+	        x = task.get();
+	    } catch (Exception e) {
+	        // failed
+	    }
+	    service.shutdown();
+	    return x;
+	}
+
+	
+
+	
 
 
 }
