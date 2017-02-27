@@ -1,16 +1,33 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class ProcessJSON  {
+public class ProcessJSON {
 
-
+	private List<String> annotatorList= new ArrayList<String>();
+	// 		CONSTRUCTOR probably wont need
+	//		public ProcessJSON(List<String> annotatorList) {
+	//	       // store parameter for later user
+	//		this.annotatorList = annotatorList;
+	//	}
 	
+	class corepipelineThread implements Callable<CorePipeline> {
+	    public CorePipeline call() {
+	    	System.out.println("NEW THREAD!");
+	        return new CorePipeline(annotatorList);
+	    }
+	}
+	
+	//List<String> annotatorList = new ArrayList<String>();
 	public String process(JSONObject json)
 	{
 		try
@@ -32,13 +49,14 @@ public class ProcessJSON  {
 			{
 				Settings.language = language;
 				
-				List<String> annotatorList = new ArrayList<String>();
+				//List<String> annotatorList = new ArrayList<String>();
 				for(Object annotator: annotators)
 				{
 					if (annotator instanceof String) 
 					{
 						annotatorList.add((String)annotator);
 					}
+					
 				}
 
 				List<String> fileList = new ArrayList<String>();
@@ -49,9 +67,41 @@ public class ProcessJSON  {
 						fileList.add((String)file);
 					}
 				}
+				
+				// Original Line below
+//				CorePipeline cp = new CorePipeline(annotatorList);
 
-				CorePipeline cp = new CorePipeline(annotatorList);
+//				CorePipeline cp = null;
+//				ProcessJSON myRunnable = new ProcessJSON(); 
+//				Thread myThread = new Thread(myRunnable);
+//				myThread.start();
+//				
+//				myThread.join();
+				
+				
+//				CorePipeline cp = new CorePipeline(annotatorList);
+//				Thread thread1 = new Thread(new Runnable() {
+//				public void run() {
+//						cp = new CorePipeline(annotatorList);
+//					}
+//				});
+//				thread1.start();
+//
+//				// Finish running thread
+//				try {
+//					thread1.join();
+//				} catch (InterruptedException e) {
+//					e.printStackTrace();
+//				}
 
+				final ExecutorService service;
+		        final Future<CorePipeline>  task;
+
+		        service = Executors.newFixedThreadPool(1);        
+		        task    = service.submit(new corepipelineThread());
+		        
+		        // Run corepipline using callable new thread
+		        CorePipeline cp = task.get();
 
 				if(inputText != null && inputText.length() > 0)
 				{
@@ -162,7 +212,9 @@ public class ProcessJSON  {
 //	@Override
 //	public void run() {
 //		// TODO Auto-generated method stub
-//		
+//		System.out.println("New Thread");
+//		CorePipeline cp = new CorePipeline(annotatorList);
+//		ProcessJSON(cp);
 //	}
 
 }

@@ -119,11 +119,13 @@ public class CorePipeline
 
 			Map<String , List<String>> allData = processData(rawData); 
 			mf.saveMapToFile(allData, outputLocation);
-			Platform.runLater(new Runnable() {
-				  @Override public void run() { 
-					  GUI.setResult(allData);
-				  }
-				});
+//			Platform.runLater(new Runnable() {
+//				  @Override public void run() { 
+//					  GUI.setResult(allData);
+//				  }
+//				});
+			
+			 GUI.setResult(allData);
 			return true;
 		}
 		catch(IOException e)
@@ -140,11 +142,12 @@ public class CorePipeline
 			Map<String , List<String>> allData = processData(rawData);
 			mf.saveMapToFile(allData, outputLocation); 
 			
-			Platform.runLater(new Runnable() {
-			  @Override public void run() { 
-				  GUI.setResult(allData);
-			  }
-			});
+//			Platform.runLater(new Runnable() {
+//			  @Override public void run() { 
+//				  GUI.setResult(allData);
+//			  }
+//			});
+			 GUI.setResult(allData);
 			
 		}
 		catch(Exception e)

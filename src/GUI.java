@@ -12,13 +12,18 @@ import javafx.beans.value.ChangeListener;
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker.State;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.web.WebEngine;
 
@@ -60,36 +65,33 @@ public class GUI extends Application {
 		stage.show();
 	}
 
-	String outcome;
-
+	
 	private void loadlisteners(WebEngine webEngine) {
 		EventListener listener = new EventListener() {
 			public void handleEvent(Event ev) {
-				// TODO Make sure that processing is done on a separate thread
-				// from JavaFX
-//				 ProcessJSON pJSON = new ProcessJSON();
-//				 showAlert(pJSON.process(new JSONObject(
-//				 webEngine.executeScript("JSON.stringify($('form').serializeObject());").toString())));
-				
-// /*
-				ProcessJSON pJSON = new ProcessJSON();
-				String x = webEngine.executeScript("JSON.stringify($('form').serializeObject());").toString();
+				// TODO Make sure that processing is done on a separate thread from JavaFX
+				 ProcessJSON pJSON = new ProcessJSON();
+				 showAlert(pJSON.process(new JSONObject(
+				 webEngine.executeScript("JSON.stringify($('form').serializeObject());").toString())));
+//				String[] value = new String[1];
+//				ProcessJSON pJSON = new ProcessJSON();
+//				String x = webEngine.executeScript("JSON.stringify($('form').serializeObject());").toString();
+//				
+//				Thread thread1 = new Thread(new Runnable() {
+//					public void run() {
+//						value[0] = pJSON.process(new JSONObject(x));
+//					}
+//				});
+//				thread1.start();
+//
+//				// Finish running thread
+//				try {
+//					thread1.join();
+//				} catch (InterruptedException e) {
+//					e.printStackTrace();
+//				}
+//				showAlert(value[0]);
 
-				Thread thread1 = new Thread(new Runnable() {
-					public void run() {
-						outcome = pJSON.process(new JSONObject(x));
-					}
-				});
-				thread1.start();
-
-				// Finish running thread
-				try {
-					thread1.join();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				showAlert(outcome);
-//*/
 			}
 		};
 
@@ -117,12 +119,31 @@ public class GUI extends Application {
 
 		// --- Menu File
 		Menu menuFile = new Menu("File");
+		// add items to menuView
+		MenuItem fileExit = new MenuItem("Exit");
+		
+		menuFile.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+            	System.exit(0);
+            }
+        });        
+	    menuFile.getItems().addAll(fileExit);
 
 		// --- Menu Edit
 		Menu menuEdit = new Menu("Settings");
 
 		// --- Menu View
 		Menu menuView = new Menu("Help");
+		// add items to menuView
+		MenuItem add = new MenuItem("Help");
+		
+		menuView.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+            	helpPopup();
+                //vbox.setVisible(true);
+            }
+        });        
+	    menuView.getItems().addAll(add);
 
 		menuBar.getMenus().addAll(menuFile, menuEdit, menuView);
 
@@ -178,6 +199,18 @@ public class GUI extends Application {
 
 	public void open() {
 		Application.launch();
+	}
+	
+	public void helpPopup(){
+		final Stage dialog = new Stage();
+		System.out.println("sdfsdf");
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        //dialog.initOwner(primaryStage);
+        VBox dialogVbox = new VBox(20);
+        dialogVbox.getChildren().add(new Text("This is a Dialog"));
+        Scene dialogScene = new Scene(dialogVbox, 300, 200);
+        dialog.setScene(dialogScene);
+        dialog.show();
 	}
 
 	// TODO allow stop to be called from initialize
