@@ -158,7 +158,8 @@
 
             $(this).addClass('current');
             $("#"+tab_id).addClass('current');
-            })
+        })
+        
         $(".reset").hover(function(){
             $('.glyphicon-refresh').css('-webkit-transform','rotate(360deg)');
             $('.glyphicon-refresh').css('-moz-transform','rotate(360deg)');
@@ -218,11 +219,17 @@
                     $('.active-result:nth-child(2)').hide();
                     $('.active-result:nth-child(3)').hide();
                     $('.active-result:nth-child(5)').hide();
+                    // $(".chosen-select option:contains('Lemmas')").attr("disabled","disabled");
+                    // $(".chosen-select option:contains('Named Entities')").attr("disabled","disabled");
+                    // $(".chosen-select option:contains('Sentiment')").attr("disabled","disabled");
                 }
  		else if(global_var=="French"){
                     $('.active-result:nth-child(2)').hide();
                     $('.active-result:nth-child(3)').hide();
                     $('.active-result:nth-child(5)').hide();
+                    // $(".chosen-select option:contains('Lemmas')").attr("disabled","disabled");
+                    // $(".chosen-select option:contains('Named Entities')").attr("disabled","disabled");
+                    // $(".chosen-select option:contains('Sentiment')").attr("disabled","disabled");
                 }
 		else if(global_var=="Spanish"){
                     $('.active-result:nth-child(2)').hide();
@@ -237,10 +244,13 @@
 
         });
 
-                $(function(){
+        $(function(){
             $(".chosen-select").chosen();
         });
-
+        function eraseText(){
+            document.getElementById("inputText").value="";
+        }
+        functio
         function eraseUrl(){
             document.getElementById("url").value="";
         }
