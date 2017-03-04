@@ -71,9 +71,8 @@ public class GUI extends Application {
 		EventListener listener = new EventListener() {
 			public void handleEvent (Event ev)
 			{
-				//TODO Make sure that processing is done on a separate thread from JavaFX 
-				ProcessJSON pJSON = new ProcessJSON();
-				showAlert(pJSON.process(new JSONObject(
+				//ProcessJSON.process(new JSONObject("{test:\"test\"}"));
+				showAlert(ProcessJSON.process(new JSONObject(
 						webEngine.executeScript("JSON.stringify($('form').serializeObject());").toString())));
 			}
 		};
@@ -130,10 +129,19 @@ public class GUI extends Application {
 			}
 			allData += "\n\n\n\n";
 		}
-		if(data.containsKey("Parser"))
+		if(data.containsKey("ConParser"))
 		{
-			allData += "---- Parser ---- \n";
-			for(String line : data.get("Parser"))
+			allData += "---- Constituency Parse ---- \n";
+			for(String line : data.get("ConParser"))
+			{
+				allData += line + "\n";;
+			}
+			allData += "\n\n\n\n";
+		}
+		if(data.containsKey("DepParser"))
+		{
+			allData += "---- Dependency Parse ---- \n";
+			for(String line : data.get("DepParser"))
 			{
 				allData += line + "\n";;
 			}

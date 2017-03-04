@@ -17,7 +17,8 @@ import java.util.concurrent.Future;
 import CorePipeline.Lemma;
 import CorePipeline.NER;
 import CorePipeline.POS;
-import CorePipeline.Parser;
+import CorePipeline.ConParser;
+import CorePipeline.DepParser;
 import CorePipeline.Sentiment;
 import CorePipeline.Arabic.ArabicPOS;
 import CorePipeline.Arabic.ArabicParser;
@@ -39,7 +40,8 @@ public class CorePipeline
 	private POS pos;
 	private Lemma lem;
 	private NER ner;
-	private Parser parser;
+	private ConParser conParser;
+	private DepParser depParser;
 
 	private ArabicPOS aPOS;
 	private ArabicParser aParser;
@@ -68,7 +70,7 @@ public class CorePipeline
 			switch(annotator)
 			{
 				case("NER"):
-					if(Settings.language.equals("English")) ner = new NER();
+					if(Settings.language.equals("English"))ner = new NER();
 					else if (Settings.language.equals("Spanish")) sNER = new SpanishNER();
 					else if (Settings.language.equals("German")) gNER = new GermanNER();
 				break;
@@ -82,13 +84,16 @@ public class CorePipeline
 					else if (Settings.language.equals("Spanish")) sPOS = new SpanishPOS();
 					else if (Settings.language.equals("German")) gPOS = new GermanPOS();
 				break;
-				case("Parser"):
-					if(Settings.language.equals("English")) parser = new Parser();
+				case("ConParser"):
+					if(Settings.language.equals("English")) conParser = new ConParser();
 					else if (Settings.language.equals("Arabic")) aParser = new ArabicParser();
 					else if (Settings.language.equals("French")) fParser = new FrenchParser();
 					else if (Settings.language.equals("Spanish")) sParser = new SpanishParser();
 					else if (Settings.language.equals("German")) gParser = new GermanParser();
 				break;
+				case("DepParser"):
+					depParser = new DepParser();
+					break;
 				case("Sentiment"):
 					sentiment = new Sentiment();
 				break;
@@ -177,28 +182,32 @@ public class CorePipeline
 		{
 			if(line != null && !line.equals(""))
 			{		
-				if(selectedAnnotators.contains("Parser"))
+				if(selectedAnnotators.contains("ConParser"))
 				{
 					if(Settings.language.equals("Arabic"))
 					{
-						processedData.get("Parser").add(aParser.process(line));
+						processedData.get("ConParser").add(aParser.process(line));
 					}
 					else if(Settings.language.equals("French"))
 					{
-						processedData.get("Parser").add(fParser.process(line));
+						processedData.get("ConParser").add(fParser.process(line));
 					}
 					else if(Settings.language.equals("Spanish"))
 					{
-						processedData.get("Parser").add(sParser.process(line));
+						processedData.get("ConParser").add(sParser.process(line));
 					}
 					else if(Settings.language.equals("German"))
 					{
-						processedData.get("Parser").add(gParser.process(line));
+						processedData.get("ConParser").add(gParser.process(line));
 					}
 					else
 					{
-						processedData.get("Parser").add(parser.process(line));
+						processedData.get("ConParser").add(conParser.process(line));
 					}
+				}
+				if(selectedAnnotators.contains("DepParser"))
+				{
+					processedData.get("DepParser").add(depParser.process(line));
 				}
 				if(selectedAnnotators.contains("Lemma"))
 				{				

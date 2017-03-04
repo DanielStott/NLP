@@ -8,13 +8,13 @@ import edu.stanford.nlp.util.CoreMap;
 import edu.stanford.nlp.simple.Document;
 import edu.stanford.nlp.simple.Sentence;
 
-public class Parser {
+public class ConParser {
 
 	private Properties props = new Properties();
 	private StanfordCoreNLP pipeline;
 
 
-	public Parser()
+	public ConParser()
 	{
 		props.setProperty("annotators", "tokenize, ssplit, pos");
 		pipeline = new StanfordCoreNLP(props);

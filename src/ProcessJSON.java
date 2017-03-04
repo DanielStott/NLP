@@ -11,12 +11,7 @@ public class ProcessJSON {
 
 	private static List<String> annotatorList= new ArrayList<String>();
 
-	public static List<String> annotatorList()
-    {
-        return annotatorList;
-    }
-	
-	public String process(JSONObject json)
+	public static String process(JSONObject json)
 	{
 		try
 		{
@@ -55,9 +50,10 @@ public class ProcessJSON {
 					}
 				}
 
+				
 				// Run corepipline using callable new thread
-		        CorePipeline cp = CorePipeline.CorePipelineThread();
-
+				CorePipeline cp = CorePipeline.CorePipelineThread();
+				
 				if(inputText != null && inputText.length() > 0)
 				{
 					List<String> rawData = new ArrayList<String>(Arrays.asList(inputText.split("\r\n"))); 
@@ -101,7 +97,7 @@ public class ProcessJSON {
 		return "Somthing went wrong! Error code: 100";
 	}
 
-	private JSONObject validateJSON(JSONObject json)
+	private static JSONObject validateJSON(JSONObject json)
 	{
 		if(json.length() != 0)
 		{
@@ -165,5 +161,10 @@ public class ProcessJSON {
 		return json;
 	}
 
+	public static List<String> annotatorList()
+    {
+        return annotatorList;
+    }
+	
 
 }
