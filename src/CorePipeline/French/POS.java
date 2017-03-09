@@ -1,29 +1,27 @@
-package CorePipeline.Spanish;
+package CorePipeline.French;
 
 import java.util.List;
 import java.util.Properties;
 
-import edu.stanford.nlp.international.arabic.*;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.ling.CoreAnnotations.PartOfSpeechAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.TokensAnnotation;
-import edu.stanford.nlp.parser.lexparser.LexicalizedParser;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
 
-public class SpanishPOS {
+public class POS {
 
 	private Properties props = new Properties();
 	private StanfordCoreNLP pipeline;
 	
 	
-	public SpanishPOS()
+	public POS()
 	{
 		props.setProperty("annotators", "tokenize, ssplit, pos");
-		props.setProperty("tokenize.language", "es");
-		props.setProperty("pos.model", "edu/stanford/nlp/models/pos-tagger/spanish/spanish-distsim.tagger");
+		props.setProperty("tokenize.language", "fr");
+		props.setProperty("pos.model", "edu/stanford/nlp/models/pos-tagger/french/french.tagger");
 		pipeline = new StanfordCoreNLP(props);
 	}
 	

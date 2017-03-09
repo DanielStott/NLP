@@ -4,7 +4,6 @@ import java.util.List;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ import java.io.OutputStreamWriter;
 
 public class ManageFile {
 
-	public Path defaultOutput = Paths.get(System.getProperty("user.dir"));
+	public static Path defaultOutput = Paths.get(System.getProperty("user.dir"));
 	public static final String pathSlash = OSValidator.isWindows() ? "\\" : "/";
 	
 	public static Path selectFile()
@@ -70,7 +69,7 @@ public class ManageFile {
 		return filePaths;
 	}
 	
-	public boolean saveMapToFile(Map<String, List<String>> data, Path outputLocation)
+	public static boolean saveMapToFile(Map<String, List<String>> data, Path outputLocation)
 	{
 		if(outputLocation == null) outputLocation = defaultOutput;
 		

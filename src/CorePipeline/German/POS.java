@@ -1,33 +1,33 @@
-package CorePipeline.Spanish;
+package CorePipeline.German;
 
 import java.util.List;
 import java.util.Properties;
 
 import edu.stanford.nlp.ling.CoreLabel;
-import edu.stanford.nlp.ling.CoreAnnotations.NamedEntityTagAnnotation;
+import edu.stanford.nlp.ling.CoreAnnotations.PartOfSpeechAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.TokensAnnotation;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
 
-public class SpanishNER {
+public class POS {
+
 	private Properties props = new Properties();
 	private StanfordCoreNLP pipeline;
 	
 	
-	public SpanishNER()
+	public POS()
 	{
-		props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner");
-		props.setProperty("tokenize.language", "es");
-		props.setProperty("pos.model", "edu/stanford/nlp/models/pos-tagger/spanish/spanish-distsim.tagger");
-		props.setProperty("ner.model", "edu/stanford/nlp/models/ner/spanish.ancora.distsim.s512.crf.ser.gz");
+		props.setProperty("annotators", "tokenize, ssplit, pos");
+		props.setProperty("tokenize.language", "de");
+		props.setProperty("pos.model", "edu/stanford/nlp/models/pos-tagger/german/german-hgc.tagger");
 		pipeline = new StanfordCoreNLP(props);
-		
 	}
 	
 	public String process(String text)
 	{
+		if(text.equals("\n")) return "\n";
 	    // create an empty Annotation just with the given text
 	    Annotation document = new Annotation(text);
 
@@ -41,16 +41,12 @@ public class SpanishNER {
 	    for(CoreMap sentence: sentences) {
 	      // traversing the words in the current sentence
 	      // a CoreLabel is a CoreMap with additional token-specific methods
-	    	String lemma = "";
-	    	
+	    	String pos = "";
 	      for (CoreLabel token: sentence.get(TokensAnnotation.class)) {
-	    	  if(!token.get(NamedEntityTagAnnotation.class).equals("O"))
-	    	  {
-	    		 lemma += String.format("[\"%s\" defined as \"%s\"]", token.originalText(), token.get(NamedEntityTagAnnotation.class));
-	    	  }
+	         pos += String.format("[\"%s\" %s]", token.originalText(), token.get(PartOfSpeechAnnotation.class));
 	      }
 
-	      return lemma;
+	      return pos;
 	    }
 	   
 	    return "Failed to process this line";

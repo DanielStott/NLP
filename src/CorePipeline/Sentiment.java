@@ -23,7 +23,7 @@ public class Sentiment {
 		pipeline = new StanfordCoreNLP(props);
 	}
 	
-	public int process(String text)
+	public String process(String text)
 	{
         int mainSentiment = 0;
         if (text != null && text.length() > 0) 
@@ -43,6 +43,6 @@ public class Sentiment {
  
             }
         }
-        return mainSentiment;
+        return String.valueOf(mainSentiment);
 	}
 }

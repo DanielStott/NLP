@@ -1,7 +1,7 @@
 
 import java.util.List;
 import java.util.Map;
-
+import java.util.Map.Entry;
 
 import org.json.JSONObject;
 import org.w3c.dom.Document;
@@ -13,11 +13,14 @@ import javafx.beans.value.ChangeListener;
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker.State;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
@@ -40,8 +43,28 @@ public class GUI extends Application {
 		VBox root = new VBox();
 		root.setPrefSize(Settings.GUIWidth, Settings.GUIHeight);
 
-		//Set listeners
-		loadlisteners(webEngine);
+		//Set analyse button listener 
+		webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() 
+		{
+			public void changed(ObservableValue<? extends State> ov, State oldState, State newState) 
+			{
+				if (newState == State.SUCCEEDED) 
+				{
+					Document doc = webEngine.getDocument();
+					Element el = doc.getElementById("Analyse");
+					((EventTarget) el).addEventListener("click", new EventListener() {
+						public void handleEvent (Event ev)
+						{
+							ProcessJSON pJSON = new ProcessJSON();
+
+							showAlert(pJSON.process(new JSONObject(
+									webEngine.executeScript("JSON.stringify($('form').serializeObject());").toString())));
+
+						}
+					}, false);
+				}
+			}
+		});
 
 
 		stage.setTitle("SimpleNLP");
@@ -66,31 +89,6 @@ public class GUI extends Application {
 		stage.show();
 	}
 
-	private void loadlisteners(WebEngine webEngine)
-	{
-		EventListener listener = new EventListener() {
-			public void handleEvent (Event ev)
-			{
-				//ProcessJSON.process(new JSONObject("{test:\"test\"}"));
-				showAlert(ProcessJSON.process(new JSONObject(
-						webEngine.executeScript("JSON.stringify($('form').serializeObject());").toString())));
-			}
-		};
-
-		webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() 
-		{
-			public void changed(ObservableValue<? extends State> ov, State oldState, State newState) 
-			{
-				if (newState == State.SUCCEEDED) 
-				{
-					Document doc = webEngine.getDocument();
-					Element el = doc.getElementById("Analyse");
-					((EventTarget) el).addEventListener("click", listener, false);
-				}
-			}
-		});
-	}
-
 	private void showAlert(String message) {
 		Dialog<Void> alert = new Dialog<>();
 		alert.getDialogPane().setContentText(message);
@@ -104,93 +102,74 @@ public class GUI extends Application {
 
 		// --- Menu File
 		Menu menuFile = new Menu("File");
+		// add items to menuView
+		MenuItem fileExit = new MenuItem("Exit");
+
+		menuFile.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent t) {
+				System.exit(0);
+			}
+		});        
+		menuFile.getItems().addAll(fileExit);
 
 		// --- Menu Edit
-		Menu menuEdit = new Menu("Settings");
+		Menu menuSettings = new Menu("Settings");
+		
+
 
 		// --- Menu View
-		Menu menuView = new Menu("Help");
+		Menu menuHelp = new Menu("Help");
+		// add items to menuView
 
-		menuBar.getMenus().addAll(menuFile, menuEdit, menuView);
+		/*
+		setOnAction(new EventHandler<MouseEvent>() {
+			public void handle(MouseEvent t) {
+				final Stage dialog = new Stage();
+				System.out.println("sdfsdf");
+				dialog.initModality(Modality.APPLICATION_MODAL);
+				//dialog.initOwner(primaryStage);
+				VBox dialogVbox = new VBox(20);
+				dialogVbox.getChildren().add(new Text("This is a Dialog"));
+				Scene dialogScene = new Scene(dialogVbox, 300, 200);
+				dialog.setScene(dialogScene);
+				dialog.show();
+			}
+		});  */      
+
+		menuBar.getMenus().addAll(menuFile, menuSettings, menuHelp);
 
 		return menuBar;
-	}
+		}
 
-	public static void setResult(Map<String , List<String>> data)
-	{
-		String allData = "";
-		if(data.containsKey("Lemma"))
+		public static void setResult(Map<String , List<String>> data)
 		{
-			allData += "---- LEMMA ---- \n";
-			for(String line : data.get("Lemma"))
+			String allData = "";
+			for(Entry<String, List<String>> entry : data.entrySet())
 			{
-				allData += line + "\n";
-				
+				allData += String.format("---- %s ----\n", entry.getKey());
+				for(String line : entry.getValue())
+				{
+					allData += line + "\n\n\n";
+				}
 			}
-			allData += "\n\n\n\n";
-		}
-		if(data.containsKey("ConParser"))
-		{
-			allData += "---- Constituency Parse ---- \n";
-			for(String line : data.get("ConParser"))
-			{
-				allData += line + "\n";;
-			}
-			allData += "\n\n\n\n";
-		}
-		if(data.containsKey("DepParser"))
-		{
-			allData += "---- Dependency Parse ---- \n";
-			for(String line : data.get("DepParser"))
-			{
-				allData += line + "\n";;
-			}
-			allData += "\n\n\n\n";
-		}
-		if(data.containsKey("POS"))
-		{
-			allData += "---- POS ---- \n";
-			for(String line : data.get("POS"))
-			{
-				allData += line + "\n";;
-			}
-			allData += "\n\n\n\n";
-		}
-		if(data.containsKey("NER"))
-		{
-			allData += "---- NER ---- \n";
-			for(String line : data.get("NER"))
-			{
-				allData += line + "\n";;
-			}
-			allData += "\n\n\n\n";
-		}
-		if(data.containsKey("Sentiment"))
-		{
-			allData += "---- Sentiment ---- \n";
-			for(String line : data.get("Sentiment"))
-			{
-				allData += line + "\n";;
-			}
-			allData += "\n\n\n\n";
-		}
-		allData = allData.replace("'", "\\'")
-				.replace(System.getProperty("line.separator"), "\\n")
-				.replace("\n", "\\n")
-				.replace("\r", "\\n");
-		webEngine.executeScript(String.format("$('#result_tab_area').text('%s');", allData));
-	}
 
-	public void open()
-	{
-		Application.launch();
-	}
+			allData = allData.replace("'", "\\'")
+					.replace(System.getProperty("line.separator"), "\\n")
+					.replace("\n", "\\n")
+					.replace("\r", "\\n");
+			webEngine.executeScript(String.format("$('#result_tab_area').text('%s');", allData));
+		}
 
-	//TODO allow stop to be called from initialize
-	@Override
-	public void stop(){
-		System.out.println("Stage is closing");
-		// Save file
+		public void open()
+		{
+			Application.launch();
+		}
+
+		//TODO allow stop to be called from initialize
+		@Override
+		public void stop(){
+			System.out.println("Stage is closing");
+			// Save file
 	}
 
 

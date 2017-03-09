@@ -1,5 +1,6 @@
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,95 +12,47 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
-
-import CorePipeline.Lemma;
-import CorePipeline.NER;
-import CorePipeline.POS;
-import CorePipeline.ConParser;
-import CorePipeline.DepParser;
-import CorePipeline.Sentiment;
-import CorePipeline.Arabic.ArabicPOS;
-import CorePipeline.Arabic.ArabicParser;
-import CorePipeline.French.FrenchPOS;
-import CorePipeline.French.FrenchParser;
-import CorePipeline.Spanish.SpanishNER;
-import CorePipeline.Spanish.SpanishPOS;
-import CorePipeline.Spanish.SpanishParser;
-import CorePipeline.German.GermanNER;
-import CorePipeline.German.GermanPOS;
-import CorePipeline.German.GermanParser;
 
 //https://blog.openshift.com/day-20-stanford-corenlp-performing-sentiment-analysis-of-twitter-using-java/ <-- read later for sentiment example
+
 public class CorePipeline 
 {
-	private ManageFile mf = new ManageFile();
 
-	private Sentiment sentiment;
-	private POS pos;
-	private Lemma lem;
-	private NER ner;
-	private ConParser conParser;
-	private DepParser depParser;
+	public class ClassStore<classObject, classInstance> {
+	    public Class<?> classObject;
+	    public Object classInstance;
+	    
+	    public ClassStore(Class<?> Object, Object Instance) {
+	        this.classObject = Object;
+	        this.classInstance = Instance;
+	      }
+	}
 
-	private ArabicPOS aPOS;
-	private ArabicParser aParser;
+	private ArrayList<ClassStore<Class<?>, Object>> classList = new ArrayList<ClassStore<Class<?>, Object>>();
 
-	private FrenchPOS fPOS;
-	private FrenchParser fParser;
-	
-	private SpanishPOS sPOS;
-	private SpanishParser sParser;
-	private SpanishNER sNER;
-	
-	private GermanPOS gPOS;
-	private GermanParser gParser;
-	private GermanNER gNER;
-
-	private List<String> selectedAnnotators;
-
-	public CorePipeline(List<String> annotators)
+	public CorePipeline(List<String> annotators) throws Exception
 	{
-		this.selectedAnnotators = annotators;
 
-		//Only creates an instance of the class if annotator is selected
-		for(String annotator : annotators)
+
+		try
 		{
-
-			switch(annotator)
+			//Only creates an instance of the class if annotator is selected
+			for(String annotator : annotators)
 			{
-				case("NER"):
-					if(Settings.language.equals("English"))ner = new NER();
-					else if (Settings.language.equals("Spanish")) sNER = new SpanishNER();
-					else if (Settings.language.equals("German")) gNER = new GermanNER();
-				break;
-				case("Lemma"):
-					lem = new Lemma();
-				break;
-				case("POS"):
-					if(Settings.language.equals("English")) pos = new POS();
-					else if (Settings.language.equals("Arabic")) aPOS = new ArabicPOS();
-					else if (Settings.language.equals("French")) fPOS = new FrenchPOS();
-					else if (Settings.language.equals("Spanish")) sPOS = new SpanishPOS();
-					else if (Settings.language.equals("German")) gPOS = new GermanPOS();
-				break;
-				case("ConParser"):
-					if(Settings.language.equals("English")) conParser = new ConParser();
-					else if (Settings.language.equals("Arabic")) aParser = new ArabicParser();
-					else if (Settings.language.equals("French")) fParser = new FrenchParser();
-					else if (Settings.language.equals("Spanish")) sParser = new SpanishParser();
-					else if (Settings.language.equals("German")) gParser = new GermanParser();
-				break;
-				case("DepParser"):
-					depParser = new DepParser();
-					break;
-				case("Sentiment"):
-					sentiment = new Sentiment();
-				break;
-			}
+				Class<?> annotatorClass = Settings.language.equals("English") ? 
+						Class.forName(String.format("CorePipeline.%s", annotator)) 
+						: Class.forName(String.format("CorePipeline.%s.%s", Settings.language, annotator));
+				classList.add(new ClassStore<Class<?>, Object>(annotatorClass, annotatorClass.newInstance()));
 
+			}
 		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+			throw e;
+		}
+
 	}
 
 	public boolean processDataDir(Path dirLocation, Path outputLocation, int outputMode)
@@ -137,10 +90,10 @@ public class CorePipeline
 			}
 
 			Map<String , List<String>> allData = processData(rawData); 
-			mf.saveMapToFile(allData, outputLocation);
+			ManageFile.saveMapToFile(allData, outputLocation);
 			GUI.setResult(allData);
-			
-			
+
+
 			return true;
 		}
 		catch(IOException e)
@@ -155,7 +108,7 @@ public class CorePipeline
 		try
 		{
 			Map<String , List<String>> allData = processData(rawData);
-			mf.saveMapToFile(allData, outputLocation); 
+			ManageFile.saveMapToFile(allData, outputLocation); 
 			GUI.setResult(allData);
 		}
 		catch(Exception e)
@@ -170,7 +123,7 @@ public class CorePipeline
 	public Map<String, List<String>> processData(List<String> rawData)
 	{ 
 		Map<String, List<String>> processedData = new HashMap<String, List<String>>();
-		for(String annotator : selectedAnnotators)
+		for(String annotator : Settings.annotators)
 		{
 			if(!processedData.containsKey(annotator))
 			{
@@ -182,104 +135,40 @@ public class CorePipeline
 		{
 			if(line != null && !line.equals(""))
 			{		
-				if(selectedAnnotators.contains("ConParser"))
+				try 
 				{
-					if(Settings.language.equals("Arabic"))
+					for(ClassStore<Class<?>, Object> cs: classList)
 					{
-						processedData.get("ConParser").add(aParser.process(line));
+						processedData.get(cs.classObject.getName().substring(cs.classObject.getName().lastIndexOf(".") + 1))
+						.add((String) cs.classObject.getDeclaredMethod("process", String.class).invoke(cs.classInstance, line));
 					}
-					else if(Settings.language.equals("French"))
-					{
-						processedData.get("ConParser").add(fParser.process(line));
-					}
-					else if(Settings.language.equals("Spanish"))
-					{
-						processedData.get("ConParser").add(sParser.process(line));
-					}
-					else if(Settings.language.equals("German"))
-					{
-						processedData.get("ConParser").add(gParser.process(line));
-					}
-					else
-					{
-						processedData.get("ConParser").add(conParser.process(line));
-					}
-				}
-				if(selectedAnnotators.contains("DepParser"))
+				} 
+				catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
+						| NoSuchMethodException | SecurityException e) 
 				{
-					processedData.get("DepParser").add(depParser.process(line));
-				}
-				if(selectedAnnotators.contains("Lemma"))
-				{				
-					processedData.get("Lemma").add(lem.process(line));
-				}
-				if(selectedAnnotators.contains("POS"))
-				{
-					if(Settings.language.equals("Arabic"))
-					{
-						processedData.get("POS").add(aPOS.process(line));
-					}
-					else if(Settings.language.equals("French"))
-					{
-						processedData.get("POS").add(fPOS.process(line));
-					}
-					else if(Settings.language.equals("Spanish"))
-					{
-						processedData.get("POS").add(sPOS.process(line));
-					}
-					else if(Settings.language.equals("German"))
-					{
-						processedData.get("POS").add(gPOS.process(line));
-					}
-					else
-					{
-						processedData.get("POS").add(pos.process(line));
-					}
-
-				}
-				if(selectedAnnotators.contains("NER"))
-				{
-					if(Settings.language.equals("Spanish"))
-					{
-						processedData.get("NER").add(sNER.process(line));
-					}
-					else if(Settings.language.equals("German"))
-					{
-						processedData.get("NER").add(gNER.process(line));
-					}
-					else
-					{
-						processedData.get("NER").add(ner.process(line));
-					}
-				}
-				if(selectedAnnotators.contains("Sentiment"))
-				{
-					processedData.get("Sentiment").add(String.valueOf(sentiment.process(line)));
+					e.printStackTrace();
 				}
 			}
 		}
 		return processedData;
 	}
 
-	public static CorePipeline CorePipelineThread() {
-	    CorePipeline x = null;
-	    final ExecutorService service;
-        final Future<CorePipeline>  task;
-        
-        service = Executors.newFixedThreadPool(1);        
-        task = service.submit(new Callable<CorePipeline>() {
-	        public CorePipeline call() throws Exception {
-	        	return new CorePipeline(ProcessJSON.annotatorList());
-	        }
-	    });
-	    
-	    try {
-	        x = task.get();
-	    } catch (Exception e) {
-	    	System.out.println(e);
-	    }
-	    service.shutdown();
-	    return x;
+	public static CorePipeline CorePipelineThread() throws Exception {     
+		ExecutorService service = Executors.newFixedThreadPool(1);
+		try {
+			CorePipeline cp = service.submit(new Callable<CorePipeline>() {
+				public CorePipeline call() throws Exception {
+					return new CorePipeline(Settings.annotators);
+				}
+			}).get();
+			service.shutdown();
+			return cp;
+		} 
+		catch (Exception e) 
+		{
+			System.out.println(e);
+			throw e;
+		}	    
 	}
 
 }

@@ -1,34 +1,57 @@
 package CorePipeline;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import edu.stanford.nlp.ling.CoreLabel;
+import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
+import edu.stanford.nlp.ling.CoreAnnotations.TokensAnnotation;
+import edu.stanford.nlp.parser.lexparser.LexicalizedParser;
+import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
+import edu.stanford.nlp.trees.Tree;
 import edu.stanford.nlp.util.CoreMap;
-import edu.stanford.nlp.simple.Document;
-import edu.stanford.nlp.simple.Sentence;
 
 public class ConParser {
 
 	private Properties props = new Properties();
 	private StanfordCoreNLP pipeline;
-
+	private LexicalizedParser lp;
 
 	public ConParser()
 	{
-		props.setProperty("annotators", "tokenize, ssplit, pos");
+		props.setProperty("annotators", "tokenize, ssplit, pos, parse");
+		lp = LexicalizedParser.loadModel("edu/stanford/nlp/models/lexparser/englishPCFG.ser.gz"); 
 		pipeline = new StanfordCoreNLP(props);
 	}
 
 	public String process(String text)
 	{
-		Document doc = new Document(text);
-		String parser = "";
-		for(Sentence sent : doc.sentences())
-		{
-			parser += sent.parse().toString();
-		}
-		return parser.equals("") ? "Failed to process this line" : parser;
+		if(text.equals("\n")) return "\n";
+		
+		List<CoreLabel> rawWords = new ArrayList<CoreLabel>();
+		
+		Annotation document = new Annotation(text);
+
+	    // run all Annotators on this text
+	    pipeline.annotate(document);
+
+	    // these are all the sentences in this document
+	    // a CoreMap is essentially a Map that uses class objects as keys and has values with custom types
+	    List<CoreMap> sentences = document.get(SentencesAnnotation.class);
+
+	    for(CoreMap sentence: sentences) 
+	    {
+	    	for (CoreLabel token: sentence.get(TokensAnnotation.class)) {
+		    	  rawWords.add(token);
+		      }
+	    }
+				
+	    Tree parse = lp.apply(rawWords); 
+	    
+	    
+		return parse.equals("") ? "Failed to process this line" :  parse.pennString();
 	}
 
 }

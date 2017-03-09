@@ -219,6 +219,7 @@
                     $('.active-result:nth-child(2)').hide();
                     $('.active-result:nth-child(3)').hide();
                     $('.active-result:nth-child(5)').hide();
+		    $('.active-result:nth-child(6)').hide();
                     // $(".chosen-select option:contains('Lemmas')").attr("disabled","disabled");
                     // $(".chosen-select option:contains('Named Entities')").attr("disabled","disabled");
                     // $(".chosen-select option:contains('Sentiment')").attr("disabled","disabled");
@@ -227,6 +228,7 @@
                     $('.active-result:nth-child(2)').hide();
                     $('.active-result:nth-child(3)').hide();
                     $('.active-result:nth-child(5)').hide();
+		    $('.active-result:nth-child(6)').hide();
                     // $(".chosen-select option:contains('Lemmas')").attr("disabled","disabled");
                     // $(".chosen-select option:contains('Named Entities')").attr("disabled","disabled");
                     // $(".chosen-select option:contains('Sentiment')").attr("disabled","disabled");
@@ -234,15 +236,12 @@
 		else if(global_var=="Spanish"){
                     $('.active-result:nth-child(2)').hide();
                     $('.active-result:nth-child(5)').hide();
+		    $('.active-result:nth-child(6)').hide();
                 }   
 		else if(global_var=="German"){
                     $('.active-result:nth-child(2)').hide();
                     $('.active-result:nth-child(5)').hide();
-                }
-                else{
-                    $('.active-result:nth-child(2)').show();
-                    $('.active-result:nth-child(3)').show();
-                    $('.active-result:nth-child(5)').show();
+		    $('.active-result:nth-child(6)').hide();
                 }
             })
 

@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.json.JSONArray;
@@ -9,9 +8,7 @@ import org.json.JSONObject;
 
 public class ProcessJSON {
 
-	private static List<String> annotatorList= new ArrayList<String>();
-
-	public static String process(JSONObject json)
+	public String process(JSONObject json)
 	{
 		try
 		{
@@ -31,13 +28,13 @@ public class ProcessJSON {
 					(language != null && language != ""))
 			{
 				Settings.language = language;
+				Settings.annotators.clear();
 				
-				//List<String> annotatorList = new ArrayList<String>();
 				for(Object annotator: annotators)
 				{
 					if (annotator instanceof String) 
 					{
-						annotatorList.add((String)annotator);
+						Settings.annotators.add((String)annotator);
 					}
 				}
 
@@ -161,10 +158,5 @@ public class ProcessJSON {
 		return json;
 	}
 
-	public static List<String> annotatorList()
-    {
-        return annotatorList;
-    }
-	
 
 }

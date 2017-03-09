@@ -1,4 +1,4 @@
-package CorePipeline.German;
+package CorePipeline.Spanish;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,18 +13,18 @@ import edu.stanford.nlp.util.CoreMap;
 import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.TokensAnnotation; 
 
-public class GermanParser {
+public class ConParser {
 
 	private Properties props = new Properties();
 	private StanfordCoreNLP pipeline;
 	private LexicalizedParser lp;
 
-	public GermanParser()
+	public ConParser()
 	{
 		props.setProperty("annotators", "tokenize, ssplit, pos, parse");
-		props.setProperty("tokenize.language", "de");
-		props.setProperty("pos.model", "edu/stanford/nlp/models/pos-tagger/german/german-hgc.tagger");
-		lp = LexicalizedParser.loadModel("edu/stanford/nlp/models/lexparser/germanFactored.ser.gz"); 
+		props.setProperty("tokenize.language", "es");
+		props.setProperty("pos.model", "edu/stanford/nlp/models/pos-tagger/spanish/spanish-distsim.tagger");
+		lp = LexicalizedParser.loadModel("edu/stanford/nlp/models/lexparser/spanishPCFG.ser.gz"); 
 		pipeline = new StanfordCoreNLP(props);
 	}
 

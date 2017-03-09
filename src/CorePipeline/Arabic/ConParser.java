@@ -1,4 +1,4 @@
-package CorePipeline.French;
+package CorePipeline.Arabic;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,18 +13,19 @@ import edu.stanford.nlp.util.CoreMap;
 import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.TokensAnnotation; 
 
-public class FrenchParser {
+public class ConParser {
 
 	private Properties props = new Properties();
 	private StanfordCoreNLP pipeline;
 	private LexicalizedParser lp;
 
-	public FrenchParser()
+	public ConParser()
 	{
 		props.setProperty("annotators", "tokenize, ssplit, pos, parse");
-		props.setProperty("tokenize.language", "fr");
-		props.setProperty("pos.model", "edu/stanford/nlp/models/pos-tagger/french/french.tagger");
-		lp = LexicalizedParser.loadModel("edu/stanford/nlp/models/lexparser/frenchFactored.ser.gz"); 
+		props.setProperty("tokenize.language", "ar");
+		props.setProperty("pos.model", "edu/stanford/nlp/models/pos-tagger/arabic/arabic.tagger");
+		props.setProperty("segment.model", "edu/stanford/nlp/models/segmenter/arabic/arabic-segmenter-atb+bn+arztrain.ser.gz");
+		lp = LexicalizedParser.loadModel("edu/stanford/nlp/models/lexparser/arabicFactored.ser.gz"); 
 		pipeline = new StanfordCoreNLP(props);
 	}
 
