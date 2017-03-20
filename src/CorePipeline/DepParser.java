@@ -14,6 +14,7 @@ public class DepParser {
 
 	private DependencyParser parser;
 	private MaxentTagger tagger;
+	private int lineNumb = 0;
 
 	public DepParser()
 	{
@@ -33,7 +34,7 @@ public class DepParser {
 	      		
 	    	}
 	    String output = gs.typedDependencies().toString();
-	    return output.equals("") ? "Failed to process this line" : output;
+	    return output.equals("") ? "Failed to process this line" : String.format("[Line %s [%s]]", ++lineNumb, output);
 	}
 
 }

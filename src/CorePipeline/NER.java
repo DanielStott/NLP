@@ -14,7 +14,7 @@ import edu.stanford.nlp.util.CoreMap;
 public class NER {
 	private Properties props = new Properties();
 	private StanfordCoreNLP pipeline;
-	
+	private int lineNumb = 0;
 	
 	public NER()
 	{
@@ -38,16 +38,16 @@ public class NER {
 	    for(CoreMap sentence: sentences) {
 	      // traversing the words in the current sentence
 	      // a CoreLabel is a CoreMap with additional token-specific methods
-	    	String lemma = "";
+	    	String ner = "";
 	    	
 	      for (CoreLabel token: sentence.get(TokensAnnotation.class)) {
 	    	  if(!token.get(NamedEntityTagAnnotation.class).equals("O"))
 	    	  {
-	    		 lemma += String.format("[\"%s\" defined as \"%s\"]", token.originalText(), token.get(NamedEntityTagAnnotation.class));
+	    		 ner += String.format("[\"%s\" defined as \"%s\"]", token.originalText(), token.get(NamedEntityTagAnnotation.class));
 	    	  }
 	      }
 
-	      return lemma;
+	      return String.format("[Line %s %s]", ++lineNumb, ner);
 	    }
 	   
 	    return "Failed to process this line";

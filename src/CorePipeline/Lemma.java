@@ -14,7 +14,7 @@ import edu.stanford.nlp.util.CoreMap;
 public class Lemma {
 	private Properties props = new Properties();
 	private StanfordCoreNLP pipeline;
-	
+	private int lineNumb = 0;
 	
 	public Lemma()
 	{
@@ -42,7 +42,7 @@ public class Lemma {
 	      for (CoreLabel token: sentence.get(TokensAnnotation.class)) {
 	    	 if(!token.originalText().equals((token.get(LemmaAnnotation.class))))
 	    	 {
-	    		 lemma += String.format("[\"%s\" at location %s changed to \"%s\"]", token.originalText(), token.index(), token.get(LemmaAnnotation.class));
+	    		 lemma += String.format("[Line %s [\"%s\" at location %s changed to \"%s\"]]", ++lineNumb, token.originalText(), token.index(), token.get(LemmaAnnotation.class));
 	    	 }
 	      }
 

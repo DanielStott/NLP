@@ -18,6 +18,7 @@ public class ConParser {
 	private Properties props = new Properties();
 	private StanfordCoreNLP pipeline;
 	private LexicalizedParser lp;
+	private int lineNumb = 0;
 
 	public ConParser()
 	{
@@ -51,7 +52,7 @@ public class ConParser {
 	    Tree parse = lp.apply(rawWords); 
 	    
 	    
-		return parse.equals("") ? "Failed to process this line" :  parse.pennString();
+		return parse.equals("") ? "Failed to process this line" :  String.format("[Line %s [%s]]", ++lineNumb, parse.pennString());
 	}
 
 }

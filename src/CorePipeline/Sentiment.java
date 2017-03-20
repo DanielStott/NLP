@@ -15,7 +15,7 @@ public class Sentiment {
 
 	private Properties props = new Properties();
 	private StanfordCoreNLP pipeline;
-	
+	private int lineNumb = 0;
 	
 	public Sentiment()
 	{
@@ -43,6 +43,6 @@ public class Sentiment {
  
             }
         }
-        return String.valueOf(mainSentiment);
+        return String.format("[Line %s has a sentiment value of %s]", ++lineNumb, String.valueOf(mainSentiment));
 	}
 }

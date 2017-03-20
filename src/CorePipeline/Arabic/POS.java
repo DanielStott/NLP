@@ -15,7 +15,7 @@ public class POS {
 
 	private Properties props = new Properties();
 	private StanfordCoreNLP pipeline;
-	
+	private int lineNumb = 0;
 	
 	public POS()
 	{
@@ -47,7 +47,7 @@ public class POS {
 	         pos += String.format("[\"%s\" %s]", token.originalText(), token.get(PartOfSpeechAnnotation.class));
 	      }
 
-	      return pos;
+	      return String.format("[Line %s %s]", ++lineNumb, pos);
 	    }
 	   
 	    return "Failed to process this line";
