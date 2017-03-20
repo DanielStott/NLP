@@ -1,18 +1,17 @@
 
-installation:
 The project is hosted on GitHub.com, you can download it directly from the website or install it from eclipse using this URL
 https://github.com/WilliamStott/NLP.git
 
 To install from eclipse:
-1.Open eclipse
-2.File
-3.Import
-4.Git
-5.Projects from Git
-6.CloneURI
-7. Enter URL above in URI then press next
-8.Select Master branch and next
-9.Select next until completion
+1. Open eclipse,
+2. File,
+3. Import,
+4. Git,
+5. Projects from Git,
+6. CloneURI,
+7. Enter URL above in URI then press next,
+8. Select Master branch and next,
+9. Select next until completion
 
 Once you have the project, you will need to install the language models which are not hosted on GitHub as the filesizes are too large.
 So you will need to download them from this site.
