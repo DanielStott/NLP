@@ -11,9 +11,7 @@
  */
 
 (function ($) {
- 
     $.fn.numberedtextarea = function(options) {
- 
         var settings = $.extend({
             color:          null,        // Font color
             borderColor:    null,        // Border color
@@ -34,7 +32,6 @@
                 $(this).allowTabChar();
             }
         });
-        
         return this;
     };
     
@@ -146,16 +143,22 @@
 }(jQuery));
 
         $(document).ready(function(){
+            var tab_id ="hello";
         $(".ClearAll").click(function() {
             $('#myForm').find("input[type=text], textarea, select ").val("");
             $('.chosen-select option:selected').removeAttr('selected'); 
             $('.chosen-select').trigger('chosen:updated');
         });
         $('ul.tabs li').click(function(){
-            var tab_id = $(this).attr('data-tab');
+
+
+
+            tab_id = $(this).attr('data-tab');
+
+            
+            
             $('ul.tabs li').removeClass('current');
             $('.tab-content').removeClass('current');
-
             $(this).addClass('current');
             $("#"+tab_id).addClass('current');
         })
@@ -174,9 +177,10 @@
         });
         $('.urlInput').keyup(function() {
             if($(this).val().length === 2) {
-                $(this).val("http://");
+            	var userCurrentValue = $(this).val();
+                $(this).val("http://www."+userCurrentValue);
             } 
-            });
+        });
 
             
             $(".chosen-select").chosen().change(function(e, params){
@@ -197,9 +201,8 @@
                 if($(this).val().length > 0 ) {
                     $(".chosen-select").chosen().change(function(e, params){
                         if($($(".chosen-select").chosen().val()).length > 0 ){
-                            document.getElementById('Analyse').disabled = false;
+                            document.getElementById('Analyse').disabled = true;
                         }
-                    //values is an array containing all the results.
                     });
   
                 }else{
@@ -212,7 +215,9 @@
                 $('.chosen-select option:selected').removeAttr('selected'); 
                 $('.chosen-select').trigger('chosen:updated');
             });
-
+            
+            
+            //Hide option based on what the user picked for language
             $('.chosen-choices').click(function(){
                 var global_var = $( ".language option:selected" ).text();
                 if(global_var=="Arabic"){
@@ -244,25 +249,24 @@
 		    $('.active-result:nth-child(6)').hide();
                 }
             })
-
-        });
-
-        $(function(){
-            $(".chosen-select").chosen();
-        });
-        function eraseText(){
-            document.getElementById("inputText").value="";
-        }
-        function eraseUrl(){
-            document.getElementById("url").value="";
-        }
-        function eraseFilePath(){
-            document.getElementById("filePath").value="";
-        }
         $.fn.serializeObject = function()
         {
+            	if(tab_id=="tab-2"){
+                    alert("tab2")
+                    $('#inputText').val("");
+                    $('.fileP').val("");
+                }else if(tab_id=="tab-3"){
+                    alert("tab3")
+                    $('#url').val("");
+                    $('#inputText').val("");
+                }else{
+                    alert("tab1")
+                    $('.fileP').val("");
+                    $('#url').val("");
+                }
             var o = {};
             var a = this.serializeArray();
+
             $.each(a, function() {
                 if (o[this.name] !== undefined) {
                     if (!o[this.name].push) {
@@ -278,12 +282,32 @@
         $(function() {
             $('#myForm').submit(function() {
                 //$('#result').text(JSON.stringify($('form').serializeObject()));
+                
+                
                  var form  = JSON.stringify($('form').serializeObject())
                 console.log(form);
                 $("#redirect_link").css("display", "block");
                 return false;
             });
         });
+        });
+
+        $(function(){
+            $(".chosen-select").chosen();
+        });
+        
+        //Erase input content by clicking icon
+        function eraseText(){
+            document.getElementById("inputText").value="";
+        }
+        function eraseUrl(){
+            document.getElementById("url").value="";
+        }
+        function eraseFilePath(){
+            document.getElementById("filePath").value="";
+        }
+        
+        
         function myFunction() {
             $('.user_input_details').fadeOut(1000, "linear");
             setTimeout(function() {

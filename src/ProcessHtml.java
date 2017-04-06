@@ -61,6 +61,7 @@ public class ProcessHtml {
 			}
 
 			data = usefulHTML.replaceAll("\\\\n", "\n");
+			//data = usefulHTML.replaceAll("[\\uD83D\\uFFFD\\uFE0F\\u203C\\u3010\\u3011\\u300A\\u166D\\u200C\\u202A\\u202C\\u2049\\u20E3\\u300B\\u300C\\u3030\\u065F\\u0099\\u0F3A\\u0F3B\\uF610\\uFFFC]", "");
 
 		}catch(Exception e){
 			return null;
