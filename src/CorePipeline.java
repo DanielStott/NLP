@@ -15,10 +15,10 @@ import java.util.concurrent.Executors;
 
 
 //https://blog.openshift.com/day-20-stanford-corenlp-performing-sentiment-analysis-of-twitter-using-java/ <-- read later for sentiment example
-
+//Process text from different source locations and create instances of annotator classes to be analysed.
 public class CorePipeline 
 {
-	//inner class to store a single instance of an annotator
+	//inner class to store a annotator class
 	public class ClassStore<classObject, classInstance> {
 	    public Class<?> classObject;
 	    public Object classInstance;
@@ -30,7 +30,7 @@ public class CorePipeline
 	      }
 	}
 	
-	//list of of the class store instances
+	//list of of the class store classes
 	private ArrayList<ClassStore<Class<?>, Object>> classList = new ArrayList<ClassStore<Class<?>, Object>>();
 
 	public CorePipeline(List<String> annotators) throws Exception
@@ -56,7 +56,13 @@ public class CorePipeline
 		}
 
 	}
-	//process file directory
+		/**
+	 * processes all the files in the directory location
+	 * @param  dirLocation input directory location
+	 * @param  outputLocation output save location
+	 * @param  output format type
+	 * @return  boolean
+	 */
 	public boolean processDataDir(Path dirLocation, Path outputLocation, int outputMode)
 	{
 		try
@@ -80,7 +86,13 @@ public class CorePipeline
 			return false;
 		}
 	}
-	//process a file
+	/*
+	 * process file 
+	 * @param  dirLocation input file location
+	 * @param  outputLocation output save location
+	 * @param  output format type
+	 * @return  boolean
+	 */
 	public boolean processData(Path fileLocation, Path outputLocation, int outputMode)
 	{
 		try 
@@ -111,7 +123,13 @@ public class CorePipeline
 		}
 	}
 
-	//process input text or url
+	/*
+	 * process input text and URL
+	 * @param  rawData Input text 
+	 * @param  dirLocation input file location
+	 * @param  outputLocation output save location
+	 * @return  boolean
+	 */
 	public boolean processData(List<String> rawData, Path outputLocation)
 	{ 
 		try
@@ -133,26 +151,34 @@ public class CorePipeline
 	}
 	
 	
-	//pass to annotaors
+	/*
+	 * process and passes the data to the annotators to be analysed
+	 * @param  rawData Input text 
+	 */
 	public Map<String, List<String>> processData(List<String> rawData)
 	{ 
 		Map<String, List<String>> processedData = new HashMap<String, List<String>>();
+		//for loop of annotators selected by the user
 		for(String annotator : Settings.annotators)
 		{
 			if(!processedData.containsKey(annotator))
 			{
+				//creates hashmap of the annotators as a key and the data as the value
 				processedData.put(annotator, new ArrayList<String>());
 			}
 		}
-
+		
+		//loops through the rawdata
 		for(String line : rawData)
 		{
 			if(line != null && !line.equals(""))
 			{		
 				try 
-				{
+				{	//loop through the arraylist of tuples
 					for(ClassStore<Class<?>, Object> cs: classList)
 					{
+						//gets the annotator(key) from hashmap and inserts processdata by invoking the process function 
+						//inside the store class instance.
 						processedData.get(cs.classObject.getName().substring(cs.classObject.getName().lastIndexOf(".") + 1))
 						.add((String) cs.classObject.getDeclaredMethod("process", String.class).invoke(cs.classInstance, line));
 					}
@@ -166,7 +192,9 @@ public class CorePipeline
 		}
 		return processedData;
 	}
-
+	
+	
+	//initalises an instance of corepipeline on a new thread.
 	public static CorePipeline CorePipelineThread() throws Exception {     
 		ExecutorService service = Executors.newFixedThreadPool(1);
 		try {
