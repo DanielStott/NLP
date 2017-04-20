@@ -31,20 +31,20 @@ public class DepParser {
 	 */
 	public String process(String text)
 	{
-	    GrammaticalStructure gs = null;
-	    DocumentPreprocessor tokenizer = new DocumentPreprocessor(new StringReader(text));
-	    
-	    for (List<HasWord> sentence : tokenizer)
-	    {
-		//Processes word using maxent tagger
-	        List<TaggedWord> tagged = tagger.tagSentence(sentence);
-		//Adds gramatical structure
-	      	gs = parser.predict(tagged);	      		
-	    }
-	    //Gets dependencies
-	    String output = gs.typedDependencies().toString();
-	    //Returns dependancies
-	    return output.equals("") ? "Failed to process this line" : String.format("[Line %s [%s]]", ++lineNumb, output);
+		GrammaticalStructure gs = null;
+		DocumentPreprocessor tokenizer = new DocumentPreprocessor(new StringReader(text));
+
+		for (List<HasWord> sentence : tokenizer)
+		{
+			//Processes word using maxent tagger
+			List<TaggedWord> tagged = tagger.tagSentence(sentence);
+			//Adds gramatical structure
+			gs = parser.predict(tagged);	      		
+		}
+		//Gets dependencies
+		String output = gs.typedDependencies().toString();
+		//Returns dependancies
+		return output.equals("") ? "Failed to process this line" : String.format("[Line %s [%s]]", ++lineNumb, output);
 	}
 
 }
