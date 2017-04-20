@@ -19,6 +19,7 @@ import java.io.OutputStreamWriter;
 
 public class ManageFile {
 
+	// Make application directory the default path
 	public static Path defaultOutput = Paths.get(System.getProperty("user.dir"));
 	public static final String pathSlash = OSValidator.isWindows() ? "\\" : "/";
 	
@@ -34,16 +35,19 @@ public class ManageFile {
 	
 	public static Path selectFolder()
 	{
+		// If user is on Mac dont show file chooser - currently having problems with file chooser in mac
 		if(OSValidator.isMac()) return null;
-		
+	
+	// Initialise FileChooser
     	JFileChooser fd = new JFileChooser();
     	fd.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
     	fd.showSaveDialog(fd);
     	
-    	
+    	// From the directory, get the selected file
     	return (fd.getCurrentDirectory() !=null) ? Paths.get(fd.getSelectedFile().toString()): null;
 	}
 	
+	// Loop through and find all files in directory with certian extension(s)
 	public static ArrayList<Path> mapDirectory(Path dirLocation, ArrayList<Path> filePaths, String extenstion)
 	{
 		File dirFolder = dirLocation.toFile();
