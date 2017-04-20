@@ -67,9 +67,9 @@ public class ProcessHtml {
 		}catch(Exception e){
 			return null;
 		}
-	
+
 		System.out.println(data);
 		return new ArrayList<String>(Arrays.asList(data.split("\n"))); // Jsoup.clean(s, "", Whitelist.none(), new
-					// Document.OutputSettings().prettyPrint(false));
+		// Document.OutputSettings().prettyPrint(false));
 	}
 }

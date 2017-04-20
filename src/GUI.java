@@ -45,13 +45,14 @@ public class GUI extends Application {
 	private static WebView browser;
 	private static WebEngine webEngine;
 
-		/**
+	/**
 	 * Starts the HTML GUI
 	 * @param  Stage  default paramater for start
 	 * @return void
 	 * @see         Image
 	 */
-	@Override public void start(Stage stage) {
+	@Override public void start(Stage stage) 
+	{
 		browser = new WebView();
 		webEngine = browser.getEngine();
 		// create the scene
@@ -112,12 +113,13 @@ public class GUI extends Application {
 	 *
 	 * @param  Message - A message that is displayed back to the user
 	 */
-	private void showAlert(String message) {
+	private void showAlert(String message) 
+	{
 		Dialog<Void> alert = new Dialog<>();
 		alert.getDialogPane().setContentText(message);
 		alert.getDialogPane().getButtonTypes().add(ButtonType.OK);
 		alert.showAndWait();
-		
+
 	}
 
 	/**
@@ -126,14 +128,15 @@ public class GUI extends Application {
 	 * @return  MenuBar - Displays a menubar
 	 * @see         Image
 	 */
-	private MenuBar createMenuBar() {
-		
+	private MenuBar createMenuBar() 
+	{
+
 		MenuBar menuBar = new MenuBar();
 
 		// --- Menu File
 		Menu menuFile = new Menu("File");
 		// add items to menuView
-		
+
 		//Creates the menu items
 		MenuItem newFile = new MenuItem("New");
 		MenuItem saveFile = new MenuItem("Save");
@@ -146,15 +149,15 @@ public class GUI extends Application {
 				//closes the scene
 			}
 		});               
-    	
-    	
+
+
 		//Adds all the menu items
 		menuFile.getItems().addAll(newFile,openFile,saveFile,fileExit);
 
 		// --- Menu Edit
 		Menu editMenu = new Menu("Edit");
-		
-		
+
+
 		// Menu items for "Menu edit"
 		MenuItem undo = new MenuItem("Undo");
 		MenuItem redo = new MenuItem("Redo");
@@ -162,54 +165,58 @@ public class GUI extends Application {
 		editMenu.getItems().addAll(undo,redo);
 		redo.setDisable(true);
 		undo.setDisable(true);
-//		languageFive.setDisable(true);
-		
+		//		languageFive.setDisable(true);
+
 		// --- Menu View
-		
+
 		Menu menuHelp = new Menu("Help");
-		
+
 		MenuItem helpContent  = new MenuItem("Help Content");
 		MenuItem aboutNLP = new MenuItem("About NLP");
-		
-		aboutNLP.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent t) {
+
+		aboutNLP.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			public void handle(ActionEvent t) 
+			{
 				JFrame newFrame = new JFrame();
 				String pt1 = "<html><body width='";
-				
-                //text below appears when "About NLP" menu item is selected
-		String pt2 =
-                    "'><h1>About NLP</h1>" +
-                    "<p>" +
-                    " Natural language processing (NLP) is a field of computer science, " +
-                    " artificial intelligence, and computational linguistics concerned with the interactions " +
-                    " between computers and human (natural) languages and, in particular, " +
-                    " concerned with programming computers to fruitfully process large natural language corpora. " +
-                    "</p>";
-           
-		// width settings for the dialog
-                int width = 250;
-                String s = pt1 + width + pt2 ;
 
-                JOptionPane.showMessageDialog(newFrame, s);
+				//text below appears when "About NLP" menu item is selected
+				String pt2 =
+						"'><h1>About NLP</h1>" +
+								"<p>" +
+								" Natural language processing (NLP) is a field of computer science, " +
+								" artificial intelligence, and computational linguistics concerned with the interactions " +
+								" between computers and human (natural) languages and, in particular, " +
+								" concerned with programming computers to fruitfully process large natural language corpora. " +
+								"</p>";
+
+				// width settings for the dialog
+				int width = 250;
+				String s = pt1 + width + pt2 ;
+
+				JOptionPane.showMessageDialog(newFrame, s);
 
 			}
 		}); 
-		
-		
-		helpContent.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent t) {		    	
-//				Parent root;
-//				try{
-//					root = FXMLLoader.load(getClass().getClassLoader().getResource("/src/GUI/GUI.html"));
-//					Stage stage = new Stage();
-//					stage.setTitle("title");
-//					stage.setScene(new Scene(root, 450, 450));
-//					stage.show();
-//					((Node)(t.getSource())).getScene().getWindow().hide();
-//				}
-//				catch(IOException e){
-//					e.printStackTrace();
-//				}
+
+
+		helpContent.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			public void handle(ActionEvent t) 
+			{		    	
+				//				Parent root;
+				//				try{
+				//					root = FXMLLoader.load(getClass().getClassLoader().getResource("/src/GUI/GUI.html"));
+				//					Stage stage = new Stage();
+				//					stage.setTitle("title");
+				//					stage.setScene(new Scene(root, 450, 450));
+				//					stage.show();
+				//					((Node)(t.getSource())).getScene().getWindow().hide();
+				//				}
+				//				catch(IOException e){
+				//					e.printStackTrace();
+				//				}
 				JFrame aWindow = new JFrame("Help guidance");
 				aWindow.setBounds(900, 100, 700, 400);				
 				aWindow.setVisible(true);
@@ -217,43 +224,44 @@ public class GUI extends Application {
 		});
 		// add items to menuView
 		menuHelp.getItems().addAll(aboutNLP,helpContent);    
-		
+
 		// adds the menu items to the menu bar
 		menuBar.getMenus().addAll(menuFile, editMenu, menuHelp);
 
 		return menuBar;
-		}
+	}
 
-		// setting functions for how the results are formatted
-		public static void setResult(Map<String , List<String>> data)
+	// setting functions for how the results are formatted
+	public static void setResult(Map<String , List<String>> data)
+	{
+		String allData = "";
+		for(Entry<String, List<String>> entry : data.entrySet())
 		{
-			String allData = "";
-			for(Entry<String, List<String>> entry : data.entrySet())
+			allData += String.format("---- %s ----\n", entry.getKey());
+			for(String line : entry.getValue())
 			{
-				allData += String.format("---- %s ----\n", entry.getKey());
-				for(String line : entry.getValue())
-				{
-					allData += line + "\n\n\n";
-				}
+				allData += line + "\n\n\n";
 			}
-
-			allData = allData.replace("'", "\\'")
-					.replace(System.getProperty("line.separator"), "\\n")
-					.replace("\n", "\\n")
-					.replace("\r", "\\n");
-			webEngine.executeScript(String.format("$('#result_tab_area').text('%s');", allData));
 		}
 
-		public void open()
-		{
-			Application.launch();
-		}
+		allData = allData.replace("'", "\\'")
+				.replace(System.getProperty("line.separator"), "\\n")
+				.replace("\n", "\\n")
+				.replace("\r", "\\n");
+		webEngine.executeScript(String.format("$('#result_tab_area').text('%s');", allData));
+	}
 
-		//TODO allow stop to be called from initialize
-		@Override
-		public void stop(){
-			System.out.println("Stage is closing");
-			// Save file
+	public void open()
+	{
+		Application.launch();
+	}
+
+	//TODO allow stop to be called from initialize
+	@Override
+	public void stop()
+	{
+		System.out.println("Stage is closing");
+		// Save file
 	}
 
 

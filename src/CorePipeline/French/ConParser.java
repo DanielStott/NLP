@@ -32,29 +32,30 @@ public class ConParser {
 	public String process(String text)
 	{
 		if(text.equals("\n")) return "\n";
-		
+
 		List<CoreLabel> rawWords = new ArrayList<CoreLabel>();
-		
+
 		Annotation document = new Annotation(text);
 
-	    // run all Annotators on this text
-	    pipeline.annotate(document);
+		// run all Annotators on this text
+		pipeline.annotate(document);
 
-	    // these are all the sentences in this document
-	    // a CoreMap is essentially a Map that uses class objects as keys and has values with custom types
-	    List<CoreMap> sentences = document.get(SentencesAnnotation.class);
+		// these are all the sentences in this document
+		// a CoreMap is essentially a Map that uses class objects as keys and has values with custom types
+		List<CoreMap> sentences = document.get(SentencesAnnotation.class);
 
-	    for(CoreMap sentence: sentences) 
-	    {
-	    	for (CoreLabel token: sentence.get(TokensAnnotation.class)) {
-		    	  rawWords.add(token);
-		      }
-	    }
-				
-	    Tree parse = lp.apply(rawWords); 
-	    //parse.pennPrint(); 
-	    
-	    return parse.equals("") ? "Failed to process this line" :  String.format("[Line %s [%s]]", ++lineNumb, parse.pennString());
+		for(CoreMap sentence: sentences) 
+		{
+			for (CoreLabel token: sentence.get(TokensAnnotation.class)) 
+			{
+				rawWords.add(token);
+			}
+		}
+
+		Tree parse = lp.apply(rawWords); 
+		//parse.pennPrint(); 
+
+		return parse.equals("") ? "Failed to process this line" :  String.format("[Line %s [%s]]", ++lineNumb, parse.pennString());
 	}
 
 }

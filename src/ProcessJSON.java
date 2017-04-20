@@ -27,7 +27,7 @@ public class ProcessJSON {
 			String inputText = json.get("inputText").toString();
 			String url = json.get("url").toString();
 			String language = json.getString("language");
-			
+
 			//Checks to make sure required values are not empty
 			if((annotators != null && annotators.length() != 0) && 
 					(files != null && files.length() != 0) && 
@@ -36,7 +36,7 @@ public class ProcessJSON {
 			{
 				Settings.language = language;
 				Settings.annotators.clear();
-				
+
 				//Adds the selected annotators to the settings
 				for(Object annotator: annotators)
 				{
@@ -55,10 +55,10 @@ public class ProcessJSON {
 					}
 				}
 
-				
+
 				// Run corepipline using callable new thread
 				CorePipeline cp = CorePipeline.CorePipelineThread();
-				
+
 				if(inputText != null && inputText.length() > 0)
 				{
 					List<String> rawData = new ArrayList<String>(Arrays.asList(inputText.split("\r\n"))); 
