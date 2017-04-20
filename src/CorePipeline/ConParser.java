@@ -13,6 +13,8 @@ import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.trees.Tree;
 import edu.stanford.nlp.util.CoreMap;
 
+
+// Constituency Parser annotator
 public class ConParser {
 
 	private Properties props = new Properties();
@@ -20,6 +22,7 @@ public class ConParser {
 	private LexicalizedParser lp;
 	private int lineNumb = 0;
 
+	//Sets properties and loads model 
 	public ConParser()
 	{
 		props.setProperty("annotators", "tokenize, ssplit, pos, parse");
@@ -27,6 +30,11 @@ public class ConParser {
 		pipeline = new StanfordCoreNLP(props);
 	}
 
+	/**
+	 * Process a string of text and return the porcessed data. 
+	 * @param  String - A string of data to be processed
+	 * @return String - returns a string of processed data.
+	 */
 	public String process(String text)
 	{
 		if(text.equals("\n")) return "\n";
