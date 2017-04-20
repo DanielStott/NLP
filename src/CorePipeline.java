@@ -19,17 +19,19 @@ import java.util.concurrent.Executors;
 public class CorePipeline 
 {
 	//inner class to store a annotator class
-	public class ClassStore<classObject, classInstance> {
-	    public Class<?> classObject;
-	    public Object classInstance;
-		
-	    //constructor
-	    public ClassStore(Class<?> Object, Object Instance) {
-	        this.classObject = Object;
-	        this.classInstance = Instance;
-	      }
+	public class ClassStore<classObject, classInstance> 
+	{
+		public Class<?> classObject;
+		public Object classInstance;
+
+		//constructor
+		public ClassStore(Class<?> Object, Object Instance) 
+		{
+			this.classObject = Object;
+			this.classInstance = Instance;
+		}
 	}
-	
+
 	//list of of the class store classes
 	private ArrayList<ClassStore<Class<?>, Object>> classList = new ArrayList<ClassStore<Class<?>, Object>>();
 
@@ -45,7 +47,7 @@ public class CorePipeline
 				Class<?> annotatorClass = Settings.language.equals("English") ? 
 						Class.forName(String.format("CorePipeline.%s", annotator)) 
 						: Class.forName(String.format("CorePipeline.%s.%s", Settings.language, annotator));
-				classList.add(new ClassStore<Class<?>, Object>(annotatorClass, annotatorClass.newInstance()));
+						classList.add(new ClassStore<Class<?>, Object>(annotatorClass, annotatorClass.newInstance()));
 
 			}
 		}
@@ -56,7 +58,8 @@ public class CorePipeline
 		}
 
 	}
-		/**
+
+	/**
 	 * processes all the files in the directory location
 	 * @param  dirLocation input directory location
 	 * @param  outputLocation output save location
@@ -69,7 +72,7 @@ public class CorePipeline
 		{
 			//array of the different file locations
 			ArrayList<Path> textFileLocations = new ArrayList<Path>();
-			
+
 			//find all usable file types in directory
 			textFileLocations = ManageFile.mapDirectory(dirLocation, new ArrayList<Path>(), ".txt");
 
@@ -86,6 +89,7 @@ public class CorePipeline
 			return false;
 		}
 	}
+
 	/*
 	 * process file 
 	 * @param  dirLocation input file location
@@ -101,7 +105,7 @@ public class CorePipeline
 
 			//Creates a folder of the same name as file being processed		
 			outputLocation = Paths.get(outputLocation.toString(), ManageFile.pathSlash, fileLocation.toString().substring(fileLocation.toString().lastIndexOf(ManageFile.pathSlash) + 1, fileLocation.toString().lastIndexOf('.')));
-			
+
 			if(!Files.exists(outputLocation))
 			{
 				Files.createDirectory(outputLocation);
@@ -149,8 +153,8 @@ public class CorePipeline
 
 		return true;
 	}
-	
-	
+
+
 	/*
 	 * process and passes the data to the annotators to be analysed
 	 * @param  rawData Input text 
@@ -167,7 +171,7 @@ public class CorePipeline
 				processedData.put(annotator, new ArrayList<String>());
 			}
 		}
-		
+
 		//loops through the rawdata
 		for(String line : rawData)
 		{
@@ -192,14 +196,18 @@ public class CorePipeline
 		}
 		return processedData;
 	}
-	
-	
+
+
 	//initalises an instance of corepipeline on a new thread.
-	public static CorePipeline CorePipelineThread() throws Exception {     
+	public static CorePipeline CorePipelineThread() throws Exception 
+	{     
 		ExecutorService service = Executors.newFixedThreadPool(1);
-		try {
-			CorePipeline cp = service.submit(new Callable<CorePipeline>() {
-				public CorePipeline call() throws Exception {
+		try 
+		{
+			CorePipeline cp = service.submit(new Callable<CorePipeline>() 
+			{
+				public CorePipeline call() throws Exception 
+				{
 					return new CorePipeline(Settings.annotators);
 				}
 			}).get();
