@@ -1,8 +1,14 @@
 import java.util.ArrayList;
 import java.util.List;
 
+
+//declaring a public class for settings
+
 public class Settings 
 {
+	
+	// these static methods belong to the class
+	
 	public static String language = "English";
 	public static String dbString = "";
 	public static double GUIHeight = 600;
