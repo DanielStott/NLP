@@ -13,17 +13,18 @@ import org.jsoup.select.Elements;
 
 public class ProcessHtml {
 
+	// The tags that text will be retrived from
 	private static String[] tags = { "h1", "h2", "h3", "span", "p", "b", "i", "u" };
 
+	// Store text from webpage in arraylist
 	public static ArrayList<String> dataFromHtml(String theURL) {
-		// tags to search html page for
-		// String[] tags = { "h1", "h2", "h3", "span", "p", "b", "i", "u" };
+
 		URL url;
 		StringBuilder contentBuilder = new StringBuilder();
 		String rawHTML = null;
 		String data;
 		try {
-			// get URL content
+			// Create URL Connection
 			System.out.println("url: " + theURL);
 			url = new URL(theURL);
 			URLConnection conn = url.openConnection();
@@ -59,7 +60,7 @@ public class ProcessHtml {
 				Elements x = doc.getElementsByTag(tags[i]);
 				usefulHTML += x.text();
 			}
-
+			// Keep newlines between each tag
 			data = usefulHTML.replaceAll("\\\\n", "\n");
 			//data = usefulHTML.replaceAll("[\\uD83D\\uFFFD\\uFE0F\\u203C\\u3010\\u3011\\u300A\\u166D\\u200C\\u202A\\u202C\\u2049\\u20E3\\u300B\\u300C\\u3030\\u065F\\u0099\\u0F3A\\u0F3B\\uF610\\uFFFC]", "");
 
