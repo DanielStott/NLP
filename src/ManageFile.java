@@ -16,23 +16,31 @@ import javax.swing.JFileChooser;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
-
+//This class deals with any interaction with folders or files
 public class ManageFile {
 
 	// Make application directory the default path
 	public static Path defaultOutput = Paths.get(System.getProperty("user.dir"));
 	public static final String pathSlash = OSValidator.isWindows() ? "\\" : "/";
 	
+	/**
+	 * Selects File
+	 * @return Path - returns path of selected file
+	 */
 	public static Path selectFile()
 	{
-    	final Frame f = new Frame();
-    	FileDialog fd = new FileDialog(f, "Choose a file", FileDialog.LOAD);
-    	fd.setDirectory("C:\\Users\\Stott\\Documents");
-    	fd.setVisible(true);
+	final Frame f = new Frame();
+	FileDialog fd = new FileDialog(f, "Choose a file", FileDialog.LOAD);
+	fd.setDirectory("C:\\Users\\Stott\\Documents");
+	fd.setVisible(true);
 
-    	return (fd.getDirectory() !=null && fd.getFile() != null) ? Paths.get(fd.getDirectory(), fd.getFile()): null;
+	return (fd.getDirectory() !=null && fd.getFile() != null) ? Paths.get(fd.getDirectory(), fd.getFile()): null;
 	}
 	
+	/**
+	 * Selects Folder
+	 * @return Path - returns path of selected folder
+	 */
 	public static Path selectFolder()
 	{
 		// If user is on Mac dont show file chooser - currently having problems with file chooser in mac
@@ -47,7 +55,13 @@ public class ManageFile {
     	return (fd.getCurrentDirectory() !=null) ? Paths.get(fd.getSelectedFile().toString()): null;
 	}
 	
-	// Loop through and find all files in directory with certian extension(s)
+	/**
+	 * Loop through and find all files in directory with certian extension(s)
+	 * @param  Path - directory location
+	 * @param  ArrayList<Path> - list of all file paths
+	 * @param  String - extension to search for
+	 * @return ArrayList<Path> - returns paths of found files
+	 */
 	public static ArrayList<Path> mapDirectory(Path dirLocation, ArrayList<Path> filePaths, String extenstion)
 	{
 		File dirFolder = dirLocation.toFile();
@@ -73,6 +87,12 @@ public class ManageFile {
 		return filePaths;
 	}
 	
+	/**
+	 * Saves contents of a HashMap to a folder. Uses the key as the folder name.
+	 * @param  Map<String, List<String>> - Input data
+	 * @param  Path - output location
+	 * @return Boolean - returns true if successful 
+	 */
 	public static boolean saveMapToFile(Map<String, List<String>> data, Path outputLocation)
 	{
 		if(outputLocation == null) outputLocation = defaultOutput;
@@ -106,17 +126,32 @@ public class ManageFile {
 		return true;
 	}
 	
-	
+	/**
+	 * Saves data to file
+	 * @param  ArrayList<String> - Data
+	 * @param  Path - output location
+	 * @return Boolean - returns true if successful 
+	 */
 	public boolean saveToFile(ArrayList<String> data, Path fileLocation)
 	{
 		return true;
 	}
 	
+	/**
+	 * Checks if is directory
+	 * @param  String - directory location
+	 * @return Boolean - returns true if is directory
+	 */
 	public static boolean isDirectory(String directory)
 	{
 		return new File(directory).isDirectory();
 	}
 	
+	/**
+	 * Checks if is file
+	 * @param  String - file location
+	 * @return Boolean - returns true if is file
+	 */
 	public static boolean isFile(String file)
 	{
 		return new File(file).isFile();
