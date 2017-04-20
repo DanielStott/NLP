@@ -49,6 +49,7 @@ public class GUI extends Application {
 
 		String workingDir = System.getProperty("user.dir");
 		webEngine.load("file:///" + workingDir + "/src/GUI/GUI.html");
+		// uses the web engine to load the front end GUI
 
 
 		VBox root = new VBox();
@@ -77,7 +78,7 @@ public class GUI extends Application {
 			}
 		});
 
-
+		// sets the title for the scene
 		stage.setTitle("SimpleNLP");
 
 		// Create the Scene
@@ -97,11 +98,13 @@ public class GUI extends Application {
 		stage.show();
 	}
 
+	//shows the alert dialog box if there is any error
 	private void showAlert(String message) {
 		Dialog<Void> alert = new Dialog<>();
 		alert.getDialogPane().setContentText(message);
 		alert.getDialogPane().getButtonTypes().add(ButtonType.OK);
 		alert.showAndWait();
+		
 	}
 
 	// TODO Add options for menu bars
@@ -120,6 +123,7 @@ public class GUI extends Application {
 		fileExit.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent t) {
 				System.exit(0);
+				//closes the scene
 			}
 		});               
     	
@@ -128,6 +132,9 @@ public class GUI extends Application {
 
 		// --- Menu Edit
 		Menu editMenu = new Menu("Edit");
+		
+		
+		// Menu items for "Menu edit"
 		MenuItem undo = new MenuItem("Undo");
 		MenuItem redo = new MenuItem("Redo");
 
@@ -147,7 +154,9 @@ public class GUI extends Application {
 			public void handle(ActionEvent t) {
 				JFrame newFrame = new JFrame();
 				String pt1 = "<html><body width='";
-                String pt2 =
+				
+                //text below appears when "About NLP" menu item is selected
+		String pt2 =
                     "'><h1>About NLP</h1>" +
                     "<p>" +
                     " Natural language processing (NLP) is a field of computer science, " +
@@ -156,7 +165,7 @@ public class GUI extends Application {
                     " concerned with programming computers to fruitfully process large natural language corpora. " +
                     "</p>";
            
-
+		// width settings for the dialog
                 int width = 250;
                 String s = pt1 + width + pt2 ;
 
@@ -202,12 +211,14 @@ public class GUI extends Application {
 				dialog.show();
 			}
 		});  */      
-
+		
+		// adds the menu items to the menu bar
 		menuBar.getMenus().addAll(menuFile, editMenu, menuHelp);
 
 		return menuBar;
 		}
 
+		// setting functions for how the results are formatted
 		public static void setResult(Map<String , List<String>> data)
 		{
 			String allData = "";
