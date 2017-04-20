@@ -50,6 +50,7 @@ public class ConParser {
 	    // a CoreMap is essentially a Map that uses class objects as keys and has values with custom types
 	    List<CoreMap> sentences = document.get(SentencesAnnotation.class);
 
+	    //Loops through applying the Constituency Parser
 	    for(CoreMap sentence: sentences) 
 	    {
 	    	for (CoreLabel token: sentence.get(TokensAnnotation.class)) {
@@ -57,9 +58,11 @@ public class ConParser {
 		      }
 	    }
 				
+	    //Inserts the data into a tree
 	    Tree parse = lp.apply(rawWords); 
 	    
 	    
+		//Return the data if it is not empty
 		return parse.equals("") ? "Failed to process this line" :  String.format("[Line %s [%s]]", ++lineNumb, parse.pennString());
 	}
 
