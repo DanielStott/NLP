@@ -13,19 +13,25 @@ import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
 
 
 
-
+//This is the Parts of Speech annotator class
 public class POS {
 
 	private Properties props = new Properties();
 	private StanfordCoreNLP pipeline;
 	private int lineNumb = 0;
 	
+	//Adds properties when constructed
 	public POS()
 	{
 		props.setProperty("annotators", "tokenize, ssplit, pos");
 		pipeline = new StanfordCoreNLP(props);
 	}
 	
+	/**
+	* Process a string of text and return the porcessed data. 
+	* @param  String - A string of data to be processed
+	* @return String - returns a string of processed data.
+	*/
 	public String process(String text)
 	{
 	    // create an empty Annotation just with the given text
@@ -43,9 +49,10 @@ public class POS {
 	      // a CoreLabel is a CoreMap with additional token-specific methods
 	    	String pos = "";
 	      for (CoreLabel token: sentence.get(TokensAnnotation.class)) {
+		 //Adds both the original and the converted text to the return string
 	         pos += String.format("[\"%s\" %s]", token.originalText(), token.get(PartOfSpeechAnnotation.class));
 	      }
-
+	      //Returns the data.
 	      return String.format("[Line %s %s]", ++lineNumb, pos);
 	    }
 	   
