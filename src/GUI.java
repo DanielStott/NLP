@@ -37,11 +37,20 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.scene.web.WebEngine;
 
-
+/**
+ * This class is repsonsible for everything to do with the GUI.
+ * Controls launching, communication and response to the HTML GUI.
+ */
 public class GUI extends Application {
 	private static WebView browser;
 	private static WebEngine webEngine;
 
+		/**
+	 * Starts the HTML GUI
+	 * @param  Stage  default paramater for start
+	 * @return void
+	 * @see         Image
+	 */
 	@Override public void start(Stage stage) {
 		browser = new WebView();
 		webEngine = browser.getEngine();
@@ -98,7 +107,11 @@ public class GUI extends Application {
 		stage.show();
 	}
 
-	//shows the alert dialog box if there is any error
+	/**
+	 * Displays text to the screen. 
+	 *
+	 * @param  Message - A message that is displayed back to the user
+	 */
 	private void showAlert(String message) {
 		Dialog<Void> alert = new Dialog<>();
 		alert.getDialogPane().setContentText(message);
@@ -107,14 +120,21 @@ public class GUI extends Application {
 		
 	}
 
-	// TODO Add options for menu bars
+	/**
+	 * Displays a menubar at the top of the program. 
+	 *
+	 * @return  MenuBar - Displays a menubar
+	 * @see         Image
+	 */
 	private MenuBar createMenuBar() {
+		
 		MenuBar menuBar = new MenuBar();
 
 		// --- Menu File
 		Menu menuFile = new Menu("File");
 		// add items to menuView
 		
+		//Creates the menu items
 		MenuItem newFile = new MenuItem("New");
 		MenuItem saveFile = new MenuItem("Save");
 		MenuItem openFile = new MenuItem("Open");
@@ -128,6 +148,7 @@ public class GUI extends Application {
 		});               
     	
     	
+		//Adds all the menu items
 		menuFile.getItems().addAll(newFile,openFile,saveFile,fileExit);
 
 		// --- Menu Edit
@@ -195,22 +216,7 @@ public class GUI extends Application {
 			}
 		});
 		// add items to menuView
-		menuHelp.getItems().addAll(aboutNLP,helpContent);
-
-		/*
-		setOnAction(new EventHandler<MouseEvent>() {
-			public void handle(MouseEvent t) {
-				final Stage dialog = new Stage();
-				System.out.println("sdfsdf");
-				dialog.initModality(Modality.APPLICATION_MODAL);
-				//dialog.initOwner(primaryStage);
-				VBox dialogVbox = new VBox(20);
-				dialogVbox.getChildren().add(new Text("This is a Dialog"));
-				Scene dialogScene = new Scene(dialogVbox, 300, 200);
-				dialog.setScene(dialogScene);
-				dialog.show();
-			}
-		});  */      
+		menuHelp.getItems().addAll(aboutNLP,helpContent);    
 		
 		// adds the menu items to the menu bar
 		menuBar.getMenus().addAll(menuFile, editMenu, menuHelp);
