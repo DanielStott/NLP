@@ -5,6 +5,7 @@ public class Initialise {
     { 
     	GUI browser = new GUI();
     	
+        //opens the browser
     	browser.open();
     } 
 }
