@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Demo</title>
+	<title>NLP</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript">
@@ -35,6 +35,8 @@
                     <option value="PDF" disabled>PDF</option>
                     <option value="Image" disabled>Image</option>
                 </select>
+		    
+		 <!-- creates an option bar for picking the language, sets the default text when no language is selected -->
                 <select select="chosen-language" name="language" placeholder="Select Language" class="language" required>
                 	<option value="English">English</option>
                 	<option value="Arabic">Arabic</option>
@@ -42,7 +44,8 @@
                 	<option value="German">German</option>
                 	<option value="Spanish">Spanish</option>	
                 </select>   
-                <!--<h4>Annotations</h4>-->
+		    
+               <!-- Annotation options for user -->
                 <select class="chosen-select" name="annotators" data-placeholder="Select Annotators" multiple style="width:100%;" tabindex="6"required >
                     <option value=""></option>
                     <option value="POS">Parts-Of-Speech</option>
@@ -54,6 +57,7 @@
                     Dependency
                 </select>
                 
+		    <!-- how the user wants to input the text to be analysed -->
                 <div class="userInput">
                     <ul class="tabs">
                         <li class="tab-link current" data-tab="tab-1">
@@ -73,6 +77,8 @@
                         <textarea rows="4" id="inputText" placeholder="Type something..."name="inputText"></textarea>
                         <div class="resetContainer">
                             <span class="glyphicon glyphicon-refresh"></span>
+				
+				<!-- reset button to clear any settings and set the page as default -->
                             <input type="button" class="reset" value="Reset" onclick="javascript:eraseText();"/> 
                         </div>
                     </div>
