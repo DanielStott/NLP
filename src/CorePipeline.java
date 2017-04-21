@@ -37,8 +37,6 @@ public class CorePipeline
 
 	public CorePipeline(List<String> annotators) throws Exception
 	{
-
-
 		try
 		{
 			//Only creates an instance of the class if annotator is selected
