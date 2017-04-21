@@ -47,7 +47,7 @@ public class CorePipeline
 				Class<?> annotatorClass = Settings.language.equals("English") ? 
 						Class.forName(String.format("CorePipeline.%s", annotator)) 
 						: Class.forName(String.format("CorePipeline.%s.%s", Settings.language, annotator));
-						classList.add(new ClassStore<Class<?>, Object>(annotatorClass, annotatorClass.newInstance()));
+				classList.add(new ClassStore<Class<?>, Object>(annotatorClass, annotatorClass.newInstance()));
 
 			}
 		}
