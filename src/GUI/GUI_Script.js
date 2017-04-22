@@ -164,16 +164,16 @@
         })
         
         $(".reset").hover(function(){
-            $('.glyphicon-refresh').css('-webkit-transform','rotate(360deg)');
-            $('.glyphicon-refresh').css('-moz-transform','rotate(360deg)');
-            $('.glyphicon-refresh').css('-o-transform','rotate(360deg)');
-            $('.glyphicon-refresh').css('-ms-transform','rotate(360deg)');
+            $('.fa-refresh').css('-webkit-transform','rotate(360deg)');
+            $('.fa-refresh').css('-moz-transform','rotate(360deg)');
+            $('.fa-refresh').css('-o-transform','rotate(360deg)');
+            $('.fa-refresh').css('-ms-transform','rotate(360deg)');
         });
         $(".reset").mouseout(function(){
-            $('.glyphicon-refresh').css('-webkit-transform','');
-            $('.glyphicon-refresh').css('-moz-transform','');
-            $('.glyphicon-refresh').css('-o-transform','');
-            $('.glyphicon-refresh').css('-ms-transform','');
+            $('.fa-refresh').css('-webkit-transform','');
+            $('.fa-refresh').css('-moz-transform','');
+            $('.fa-refresh').css('-o-transform','');
+            $('.fa-refresh').css('-ms-transform','');
         });
         $('.urlInput').keyup(function() {
             if($(this).val().length === 2) {
@@ -281,9 +281,6 @@
         };
         $(function() {
             $('#myForm').submit(function() {
-                //$('#result').text(JSON.stringify($('form').serializeObject()));
-                
-                
                  var form  = JSON.stringify($('form').serializeObject())
                 console.log(form);
                 $("#redirect_link").css("display", "block");

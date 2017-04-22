@@ -106,7 +106,7 @@ textarea{
         .container{
             padding: 20px;
         }
-        .glyphicon-refresh{
+        .fa-refresh{
             -webkit-transform:none;
             -moz-transfor:none;
             -o-transform:none;
@@ -518,8 +518,9 @@ textarea{
             margin: 5px 0px;
             text-align: right;
         }
-        .resetContainer span{
-            top:15px;
+        .resetContainer i{
+            position: absolute;
+            right: 20%;
             font-size: 30px;
             color: #fca72f;
             -webkit-transition-duration: 0.8s;

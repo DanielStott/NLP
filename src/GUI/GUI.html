@@ -7,9 +7,8 @@
 	<script src="jquery.min.1-6-4.js" type="text/javascript"></script>
 	<script src="chosen.jquery.js" type="text/javascript"></script>
 	
-	
 	<script src="GUI_Script.js"></script> 
-	<link href="GUI_design.css" rel="stylesheet" type="text/css">
+	
 	<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 	
 	<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
@@ -17,7 +16,7 @@
 	<script src="http://harvesthq.github.io/chosen/chosen.jquery.js" type="text/javascript"></script>	
 	<link rel="stylesheet" href="bootstrap.min.3-3-7.css">
 	<link rel="stylesheet" href="font-awesome.min.4-7-0.css">
-
+	<link href="GUI_design.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 	<div class="container user_input_details">
@@ -71,19 +70,18 @@
                             Text To Annotate
                         </li>
                         <li class="tab-link" data-tab="tab-2">
-                            <span class="glyphicon glyphicon-link"></span>
+                            <i class="fa fa-link"></i>
                             URL
                         </li>
                         <li class="tab-link" data-tab="tab-3">
-                            <span class="glyphicon glyphicon-file"></span>
+                            <i class="fa fa-file" aria-hidden="true"></i>
                             File Directory
                         </li>
                     </ul>
                     <div id="tab-1" class="tab-content current">
                         <textarea rows="6" id="inputText" placeholder="Type something..."name="inputText"></textarea>
                         <div class="resetContainer">
-                            <span class="glyphicon glyphicon-refresh"></span>
-				
+                            <i class="fa fa-refresh" aria-hidden="true"></i>
 				<!-- reset button to clear any settings and set the page as default -->
                             <input type="button" class="reset" value="Reset" onclick="javascript:eraseText();"/> 
                         </div>
@@ -93,14 +91,15 @@
                         placeholder="http://www.example.com"/>
                         
                         <div class="resetContainer">
-                            <span class="glyphicon glyphicon-refresh"></span>
+                            <i class="fa fa-refresh" aria-hidden="true"></i>
                             <input type="button" class="reset" value="Reset" onclick="javascript:eraseUrl();"/> 
                         </div>
                     </div>
                     <div id="tab-3" class="tab-content">
                         <input type="text" class="fileP" pattern="^(([a-zA-Z]:)|(\\{2}\w+)\$?)(\\(\w[\w ]*))+\.(txt|TXT)$" placeholder="c:\file.txt" name="filePath" id="filePath"/>
                         <div class="resetContainer">
-                            <span class="glyphicon glyphicon-refresh"></span>
+                            <i class="fa fa-refresh" aria-hidden="true"></i>
+                            <!-- span class="glyphicon glyphicon-refresh"></span> -->
                             <input type="button" class="reset" value="Reset" onclick="javascript:eraseFilePath();"/> 
                         </div>
                     </div>

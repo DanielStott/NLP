@@ -201,25 +201,50 @@ public class GUI extends Application {
 		}); 
 
 
-		helpContent.setOnAction(new EventHandler<ActionEvent>() 
-		{
-			public void handle(ActionEvent t) 
-			{		    	
-				//				Parent root;
-				//				try{
-				//					root = FXMLLoader.load(getClass().getClassLoader().getResource("/src/GUI/GUI.html"));
-				//					Stage stage = new Stage();
-				//					stage.setTitle("title");
-				//					stage.setScene(new Scene(root, 450, 450));
-				//					stage.show();
-				//					((Node)(t.getSource())).getScene().getWindow().hide();
-				//				}
-				//				catch(IOException e){
-				//					e.printStackTrace();
-				//				}
-				JFrame aWindow = new JFrame("Help guidance");
-				aWindow.setBounds(900, 100, 700, 400);				
-				aWindow.setVisible(true);
+		helpContent.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent t) {	
+				JFrame aWindow = new JFrame();
+				
+				String pt1 = "<html><body width='";
+                String pt2 =
+                    "'><h1>Help page</h1>" +
+                    "<p>" +
+                    " The project is hosted on GitHub.com, you can download it directly from the website or "
+                    + "install it from eclipse using this URL "
+                    + "https://github.com/WilliamStott/NLP.git"
+                    + "</p>";
+                String pt3 = 
+                	"<p>" +
+                	" To install from eclipse:</p>"
+                	+"<p>1. Open eclipse,</p>"
+					+"<p>2. File,</p>"
+					+"<p>3. Import,</p>"
+					+"<p>4. Git,</p>"
+					+"<p>5. Projects from Git,</p>"
+					+"<p>6. CloneURI,</p>"
+					+"<p>7. Enter URL above in URI then press next,</p>"
+					+"<p>8. Select Master branch and next,</p>"
+					+"<p>9. Select next until completion</p>";
+                String pt4 = 
+                	"<p>Once you have the project, you will need to install the language models which are not hosted on GitHub as the filesizes are too large.</p>"
+                	+ "<p>So you will need to download them from this site.http://stanfordnlp.github.io/CoreNLP/download.html</p>"
+                	+ "<p>All the languages will be needed to be installed except from English(KBP) and Chinese.</p>"
+                	+ "<p>Place the models into the project library must add the models to the classpath in the java build section and add them as external "
+                	+ "JARS classpath can be found by right clicking the project folder and pressing alt+enter</p>";
+                
+                String pt5 = "<p>To avoid an memory error</p>"
+                		+ "<p>You must increase the memory allocation used by Eclipse.</p>"
+                		+ "<p>This is done by opening eclipse and clicking run -> run configurations -> "
+                		+ "Arguments tab -> in the VM Arguments box type '-Xms2048M -Xmx3075M' -></p>"
+                		+ "<p>Apply</p>";
+                
+                int width = 500;
+                
+                String te = pt1 + width + pt2 + width + pt3 + width + pt4 + width + pt5;
+                
+//				aWindow.setBounds(900, 100, 700, 400);				
+//				aWindow.setVisible(true);
+				JOptionPane.showMessageDialog(aWindow, te);
 			}
 		});
 		// add items to menuView

@@ -101,7 +101,7 @@ public class ProcessJSON {
 		catch(Exception e)
 		{
 			System.out.println(e);
-			return "Somthing went wrong! Error code: 101.";
+			return "You've pressed Cancel!";
 		}
 		return "Somthing went wrong! Error code: 100";
 	}
