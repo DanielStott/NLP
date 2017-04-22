@@ -12,8 +12,14 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 public class ProcessHtml {
-
-	// The tags that text will be retrived from
+	
+	/**
+	 * Takes in a URL in String format, then reads the website text and stores in arraylist, to be later analysed.
+	 * @param  String - A String of the URL to retrieve text from
+	 * @return Arraylist<String> - returns a Arraylist of strings to be processed.
+	 */
+	
+	// The tags that text will be retrieved from
 	private static String[] tags = { "h1", "h2", "h3", "span", "p", "b", "i", "u" };
 
 	// Store text from webpage in arraylist
@@ -62,14 +68,12 @@ public class ProcessHtml {
 			}
 			// Keep newlines between each tag
 			data = usefulHTML.replaceAll("\\\\n", "\n");
-			//data = usefulHTML.replaceAll("[\\uD83D\\uFFFD\\uFE0F\\u203C\\u3010\\u3011\\u300A\\u166D\\u200C\\u202A\\u202C\\u2049\\u20E3\\u300B\\u300C\\u3030\\u065F\\u0099\\u0F3A\\u0F3B\\uF610\\uFFFC]", "");
 
 		}catch(Exception e){
 			return null;
 		}
 
 		System.out.println(data);
-		return new ArrayList<String>(Arrays.asList(data.split("\n"))); // Jsoup.clean(s, "", Whitelist.none(), new
-		// Document.OutputSettings().prettyPrint(false));
+		return new ArrayList<String>(Arrays.asList(data.split("\n"))); 
 	}
 }
