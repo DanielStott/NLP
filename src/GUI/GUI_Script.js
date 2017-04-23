@@ -143,6 +143,7 @@
 }(jQuery));
 
         $(document).ready(function(){
+
             var tab_id ="hello";
         $(".ClearAll").click(function() {
             $('#myForm').find("input[type=text], textarea, select ").val("");
@@ -150,13 +151,7 @@
             $('.chosen-select').trigger('chosen:updated');
         });
         $('ul.tabs li').click(function(){
-
-
-
             tab_id = $(this).attr('data-tab');
-
-            
-            
             $('ul.tabs li').removeClass('current');
             $('.tab-content').removeClass('current');
             $(this).addClass('current');
@@ -164,6 +159,7 @@
         })
         
         $(".reset").hover(function(){
+            $('.fa-refresh').css('-webkit-transform','rotate(360deg)');
             $('.fa-refresh').css('-webkit-transform','rotate(360deg)');
             $('.fa-refresh').css('-moz-transform','rotate(360deg)');
             $('.fa-refresh').css('-o-transform','rotate(360deg)');
@@ -175,6 +171,7 @@
             $('.fa-refresh').css('-o-transform','');
             $('.fa-refresh').css('-ms-transform','');
         });
+
         $('.urlInput').keyup(function() {
             if($(this).val().length === 2) {
             	var userCurrentValue = $(this).val();
@@ -219,11 +216,16 @@
             
             //Hide option based on what the user picked for language
             $('.chosen-choices').click(function(){
+                $(".chosen-choices .search-field input").prop('disabled', true);
+                var $container = $('.chosen-container')
+                var $list = $container.find('.chosen-choices');
+
                 var global_var = $( ".language option:selected" ).text();
                 if(global_var=="Arabic"){
-                    $('.active-result:nth-child(2)').hide();
+                    $('.active-result:nth-child(2)').remove();
                     $('.active-result:nth-child(3)').hide();
                     $('.active-result:nth-child(5)').hide();
+
 		    $('.active-result:nth-child(6)').hide();
                     // $(".chosen-select option:contains('Lemmas')").attr("disabled","disabled");
                     // $(".chosen-select option:contains('Named Entities')").attr("disabled","disabled");
