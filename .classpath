@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="libs/stanford-corenlp/models/stanford-arabic-corenlp-2016-10-31-models.jar"/>
+	<classpathentry kind="lib" path="libs/stanford-corenlp/models/stanford-english-corenlp-2016-10-31-models.jar"/>
+	<classpathentry kind="lib" path="libs/stanford-corenlp/models/stanford-french-corenlp-2016-10-31-models.jar"/>
+	<classpathentry kind="lib" path="libs/stanford-corenlp/models/stanford-german-corenlp-2016-10-31-models.jar"/>
+	<classpathentry kind="lib" path="libs/stanford-corenlp/models/stanford-spanish-corenlp-2016-10-31-models.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="libs/json.jar"/>
 	<classpathentry kind="lib" path="libs/jsoup-1.10.2.jar"/>
@@ -16,10 +20,6 @@
 	<classpathentry kind="lib" path="libs/stanford-corenlp/stanford-corenlp-3.7.0-sources.jar"/>
 	<classpathentry kind="lib" path="libs/stanford-corenlp/xom-1.2.10-src.jar"/>
 	<classpathentry kind="lib" path="libs/stanford-corenlp/slf4j-simple.jar"/>
-	<classpathentry kind="lib" path="libs/stanford-corenlp/models/stanford-arabic-corenlp-2016-10-31-models.jar"/>
-	<classpathentry kind="lib" path="libs/stanford-corenlp/models/stanford-english-corenlp-2016-10-31-models.jar"/>
-	<classpathentry kind="lib" path="libs/stanford-corenlp/models/stanford-french-corenlp-2016-10-31-models.jar"/>
-	<classpathentry kind="lib" path="libs/stanford-corenlp/models/stanford-german-corenlp-2016-10-31-models.jar"/>
-	<classpathentry kind="lib" path="libs/stanford-corenlp/models/stanford-spanish-corenlp-2016-10-31-models.jar"/>
+	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
