@@ -222,7 +222,7 @@
 
                 var global_var = $( ".language option:selected" ).text();
                 if(global_var=="Arabic"){
-                    $('.active-result:nth-child(2)').remove();
+                    $('.active-result:nth-child(2)').hide();
                     $('.active-result:nth-child(3)').hide();
                     $('.active-result:nth-child(5)').hide();
 
